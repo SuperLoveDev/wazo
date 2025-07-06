@@ -1,2 +1,0 @@
-# wazo-repo
-First repo
