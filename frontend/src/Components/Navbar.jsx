@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { assets } from "../assets/assets";
+import { ShopContext } from "../Context/ShopContext";
 
 const Navbar = () => {
+  const { setShowInput } = useContext(ShopContext);
+
   const navMenu = [
     { name: "Home", path: "/" },
-    { name: "Catalog", path: "/catalog" },
+    { name: "Catalogue", path: "/catalogue" },
     { name: "Create Boutique", path: "/createboutique" },
-    { name: "About", path: "/about" },
+    { name: "Tab De Bord", path: "/tableaubord" },
     { name: "Contact", path: "/contact" },
   ];
 
@@ -35,7 +38,12 @@ const Navbar = () => {
       </ul>
 
       <div className="flex items-center gap-5">
-        <img className="w-5 cursor-pointer" src={assets.search_icon} alt="" />
+        <img
+          onClick={() => setShowInput(true)}
+          className="w-5 cursor-pointer"
+          src={assets.search_icon}
+          alt=""
+        />
 
         <div className="group relative">
           <img
