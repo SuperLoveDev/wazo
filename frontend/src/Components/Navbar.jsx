@@ -15,7 +15,9 @@ const Navbar = () => {
 
   return (
     <div className="flex justify-between items-center  py-5 font-medium">
-      <h1 className="text-5xl text-black-500">WAZ0.</h1>
+      <NavLink to="/" className="text-5xl text-black-500">
+        WAZ0.
+      </NavLink>
 
       <ul className="hidden sm:flex gap-5 text-sm text-gray-800">
         {navMenu.map((link, index) => {

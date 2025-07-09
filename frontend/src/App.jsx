@@ -7,6 +7,7 @@ import CreateShop from "./Pages/CreateShop";
 import About from "./Pages/About";
 import Contact from "./Pages/Contact";
 import Cart from "./Pages/Cart";
+import Footer from "./Components/Footer";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/Contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
         </Routes>
+        <Footer />
       </div>
     </>
   );
