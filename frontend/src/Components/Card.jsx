@@ -1,39 +1,54 @@
 import React from "react";
+import { Star } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 
-const Card = ({ image, gallery, name, description, phone, location }) => {
+const Card = ({ image, name, rating, description, adresse, whatsapp }) => {
   return (
-    <div className="flex flex-col items-center bg-white rounded-2xl shadow hover:shadow-xl p-4 max-w-xs w-96 h-auto hover:scale-105 transition-transform">
-      <img
-        className="w-full h-48 object-cover rounded-xl"
-        src={image}
-        alt={name}
-      />
-
-      {/* GALLERY IMAGES */}
-      {gallery && (
-        <div className="flex gap-3 mt-3 overflow-x-auto">
-          {gallery.map((img, index) => {
-            return (
-              <img
-                key={index}
-                src={img}
-                className="w-22 h-22 object-cover rounded hover:scale-120 transform ease-in-out duration-300 cursor-pointer"
-                alt={`preview ${index + 1}`}
-              />
-            );
-          })}
-        </div>
-      )}
-
-      <div className="flex flex-col items-center mt-4 px-2 gap-2">
-        <p className="text-lg font-semibold">Name: {name}</p>
-        <p className="text-sm text-gray-600">Service: {description}</p>
-        <p className="text-sm text-gray-500">Phone: {phone}</p>
-        <p className="text-sm text-gray-500">Location: {location}</p>
+    <div className="flex flex-col w-full h-auto max-w-xs bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+      {/* Image avec ratio fixe */}
+      <div className="aspect-video overflow-hidden">
+        <img
+          src={image}
+          className="w-full h-full object-cover rounded-t-xl"
+          alt={name}
+          loading="lazy"
+        />
       </div>
-      <button className="mt-4 w-full bg-amber-800 hover:bg-amber-700 transition-colors h-12 text-white rounded-xl font-semibold cursor-pointer">
-        See Catalog
-      </button>
+
+      {/* Contenu */}
+      <div className="p-4 flex flex-col flex-grow space-y-2">
+        <div className="flex justify-between items-start mb-4">
+          <h3 className="font-semibold text-lg line-clamp-1">{name}</h3>
+          <div className="flex items-center bg-gray-100 px-2 py-1 rounded-full">
+            <Star size={16} className="fill-black-400 text-black-400" />
+            <span className="ml-1 text-sm font-medium">{rating}</span>
+          </div>
+        </div>
+
+        <p className="text-sm text-gray-600 line-clamp-2 border border-gray-300 bg-white rounded-2xl p-2">
+          Desc: {description}
+        </p>
+
+        <p className="text-sm text-gray-600 line-clamp-2">
+          <span className="font-medium">Adresse:</span> {adresse}
+        </p>
+
+        <div className="flex justify-between items-center pt-2">
+          <button className="text-sm text-blue-600 font-medium hover:text-blue-800 transition-colors cursor-pointer">
+            Voir le catalogue →
+          </button>
+
+          <a
+            href={`https://wa.me/${whatsapp}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-green-800 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1 transition-colors"
+          >
+            <MessageCircle size={16} />
+            WhatsApp
+          </a>
+        </div>
+      </div>
     </div>
   );
 };
