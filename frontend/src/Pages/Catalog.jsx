@@ -1,13 +1,15 @@
 import React from "react";
 import HeroCatalog from "../Components/HeroCatalog";
-import InputBar from "../Components/InputBar";
 import BoutiqueCard from "../Components/BoutiqueCard";
+import { useParams } from "react-router-dom";
 
 const Catalog = () => {
+  const { id } = useParams();
+
   return (
     <>
       <HeroCatalog />
-      <BoutiqueCard />
+      <BoutiqueCard boutiqueId={id} />
     </>
   );
 };

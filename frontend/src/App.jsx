@@ -9,6 +9,7 @@ import Contact from "./Pages/Contact";
 import Cart from "./Pages/Cart";
 import Footer from "./Components/Footer";
 import TabDeBord from "./Pages/TabDeBord";
+import CatalogDetails from "./Components/CatalogDetails";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/catalogue" element={<Catalog />} />
+          <Route path="/catalogue/:id" element={<CatalogDetails />} />
           <Route path="/createboutique" element={<CreateShop />} />
           <Route path="/tableaubord" element={<TabDeBord />} />
           <Route path="/Contact" element={<Contact />} />

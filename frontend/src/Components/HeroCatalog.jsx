@@ -11,7 +11,7 @@ const HeroCatalog = () => {
       <div className="flex flex-col items-center w-full">
         <h1 className="text-5xl font-bold">
           Découvrez les <br />
-          <span className="text-6xl bg-gradient-to-l from-purple-600 to-red-500 bg-clip-text text-transparent hover:to-purple-400 transition-all duration-500">
+          <span className="text-6xl bg-gradient-to-l from-purple-600 to-red-500 bg-clip-text text-transparent transition-all duration-500">
             meilleures
           </span>{" "}
           boutiques près de chez vous

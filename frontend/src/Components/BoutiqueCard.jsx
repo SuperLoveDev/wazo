@@ -4,7 +4,7 @@ import Card from "./Card";
 import { ShopContext } from "../Context/ShopContext";
 import InputBar from "./InputBar";
 
-const BoutiqueCard = () => {
+const BoutiqueCard = ({ boutiqueId }) => {
   // IMPORTING BOUTIQUE DATA FROM CONTEXT
   const { boutiques, inputValue } = useContext(ShopContext);
 
@@ -27,7 +27,6 @@ const BoutiqueCard = () => {
 
   // VARIABLES FOR FILTERING BOUTIQUE CATEGORIES & FUNCTION
   const [selectedfiltered, setSelectedFiltered] = useState("TOUS");
-
   const filteredBoutique = useMemo(() => {
     return selectedfiltered === "TOUS"
       ? boutiques
@@ -52,6 +51,16 @@ const BoutiqueCard = () => {
       return nameMatch || descMatch || adresseMatch;
     });
   }, [boutiques, inputValue]);
+
+  const boutiqueDisplay = useMemo(() => {
+    if (boutiqueId)
+      return (
+        boutiqueId ===
+        boutiques.filter((boutique) => boutique.id === boutiqueId)
+      );
+    if (inputValue) return searchingBoutique;
+    return filteredBoutique;
+  }, [boutiqueId, boutiques, inputValue, searchingBoutique, filteredBoutique]);
 
   return (
     <>
@@ -102,23 +111,28 @@ const BoutiqueCard = () => {
         </div>
 
         {/* BOUTIQUE-CARD */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 rounded-2xl">
-          {/* RENDERING BOUTIQUE AND SELECTED CATEGORY */}
-          {(inputValue ? searchingBoutique : filteredBoutique)?.map(
-            (boutique) => (
+        {boutiqueDisplay && boutiqueDisplay.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 rounded-2xl">
+            {/* RENDERING BOUTIQUE AND SELECTED CATEGORY */}
+            {boutiqueDisplay.map((boutique) => (
               <div key={boutique.id} className="h-full">
                 <Card
+                  id={boutique.id}
                   image={boutique.image}
                   name={boutique.name}
                   rating={boutique.rating.stars}
-                  description={boutique.description}
+                  article={boutique.article}
                   adresse={boutique.adresse}
                   whatsapp={boutique.whatsapp}
                 />
               </div>
-            )
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center w-full py-8 text-gray-500 font-medium text-lg">
+            😕 Aucun résultat trouvé.
+          </div>
+        )}
       </div>
     </>
   );

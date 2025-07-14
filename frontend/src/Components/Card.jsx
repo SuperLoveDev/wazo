@@ -1,11 +1,14 @@
 import React from "react";
 import { Star } from "lucide-react";
 import { MessageCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-const Card = ({ image, name, rating, description, adresse, whatsapp }) => {
+const Card = ({ id, image, name, rating, article, adresse, whatsapp }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="flex flex-col w-full h-auto max-w-xs bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
-      {/* Image avec ratio fixe */}
+    <div className="flex flex-col w-full h-auto max-w-xs bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer">
+      {/* IMAGE avec RATION FIX */}
       <div className="aspect-video overflow-hidden">
         <img
           src={image}
@@ -26,7 +29,7 @@ const Card = ({ image, name, rating, description, adresse, whatsapp }) => {
         </div>
 
         <p className="text-sm text-gray-600 line-clamp-2 border border-gray-300 bg-white rounded-2xl p-2">
-          Desc: {description}
+          Article: {article}
         </p>
 
         <p className="text-sm text-gray-600 line-clamp-2">
@@ -34,7 +37,13 @@ const Card = ({ image, name, rating, description, adresse, whatsapp }) => {
         </p>
 
         <div className="flex justify-between items-center pt-2">
-          <button className="text-sm text-blue-600 font-medium hover:text-blue-800 transition-colors cursor-pointer">
+          <button
+            onClick={() => {
+              window.scrollTo(0, 0);
+              navigate(`/catalogue/${id}`);
+            }}
+            className="text-sm text-blue-600 font-medium hover:text-blue-800 transition-colors cursor-pointer"
+          >
             Voir le catalogue →
           </button>
 
