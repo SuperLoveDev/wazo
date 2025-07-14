@@ -6,6 +6,7 @@ import Title from "../Components/Title";
 import Gallery from "./Gallery";
 import SimilarProducts from "./SimilarProducts";
 import NearbyBoutiques from "./NearbyBoutique";
+import CatalogFooter from "./CatalogFooter";
 
 const CatalogDetails = () => {
   const navigate = useNavigate();
@@ -95,6 +96,7 @@ const CatalogDetails = () => {
       <div className="py-20">
         <SimilarProducts boutique={boutique} />
         <NearbyBoutiques boutique={boutique} />
+        <CatalogFooter />
       </div>
     </div>
   );
