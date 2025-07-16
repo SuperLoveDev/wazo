@@ -4,18 +4,30 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
 import Catalog from "./Pages/Catalog";
 import CreateShop from "./Pages/CreateShop";
-import About from "./Pages/TabDeBord";
 import Contact from "./Pages/Contact";
 import Cart from "./Pages/Cart";
 import Footer from "./Components/Footer";
-import TabDeBord from "./Pages/TabDeBord";
+import TabDeBord from "./Pages/Dashboard/TabDeBord";
 import CatalogDetails from "./Components/CatalogDetails";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import DashboardHome from "./Pages/Dashboard/DashboardHome";
+import List from "./Pages/Dashboard/List";
+import Add from "./Pages/Dashboard/Add";
+import Order from "./Pages/Dashboard/Order";
+import Statistic from "./Pages/Dashboard/Statistic";
+import Setting from "./Pages/Dashboard/Setting";
+import Login from "./Components/DashboardCompo/Login";
 
 function App() {
+  //const [token, setToken] = useState("abc");
+
   return (
     <>
+      {/* <div className="">
+        {token === "" ? <Login setToken={setToken} /> : <TabDeBord />}
+      </div> */}
+
       <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw] ">
         <Navbar />
         <Routes>
@@ -23,7 +35,14 @@ function App() {
           <Route path="/catalogue" element={<Catalog />} />
           <Route path="/catalogue/:id" element={<CatalogDetails />} />
           <Route path="/createboutique" element={<CreateShop />} />
-          <Route path="/tableaubord" element={<TabDeBord />} />
+          <Route path="/tableaubord" element={<TabDeBord />}>
+            <Route index element={<DashboardHome />} />
+            <Route path="list" element={<List />} />
+            <Route path="add" element={<Add />} />
+            <Route path="order" element={<Order />} />
+            <Route path="stats" element={<Statistic />} />
+            <Route path="setting" element={<Setting />} />
+          </Route>
           <Route path="/Contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
         </Routes>

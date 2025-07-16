@@ -32,8 +32,9 @@ const Hero = () => {
           <div className="relative w-full h-full mt-10  ">
             <img
               className="rounded-xl w-full h-full object-cover"
-              src={assets.wazohero}
-              alt=""
+              src={assets.heroImage}
+              loading="lazy"
+              alt="hero-image"
             />
           </div>
         </div>

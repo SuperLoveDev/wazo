@@ -13,3 +13,7 @@ body {
 a.active hr {
   display: block;
 }
+/* a.active:hover {
+  background-color: black;
+  border-color: white;
+} */
