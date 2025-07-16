@@ -10,6 +10,8 @@ import Cart from "./Pages/Cart";
 import Footer from "./Components/Footer";
 import TabDeBord from "./Pages/TabDeBord";
 import CatalogDetails from "./Components/CatalogDetails";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -26,6 +28,14 @@ function App() {
           <Route path="/cart" element={<Cart />} />
         </Routes>
         <Footer />
+        <ToastContainer
+          position="top-center"
+          bodyClassName="text-3xl font-semibold"
+          autoClose={5000}
+          hideProgressBar={false}
+          closeOnClick
+          pauseOnHover
+        />
       </div>
     </>
   );
