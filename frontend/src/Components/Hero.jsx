@@ -1,6 +1,8 @@
 import React from "react";
 import { assets } from "../assets/assets";
 import SectorCard from "./SectorCard";
+import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   const images = [
@@ -24,9 +26,11 @@ const Hero = () => {
           </p>
 
           {/* HERO BUTTON */}
-          <button className="border my-2 font-bold cursor-pointer w-35 h-[50px] bg-black text-white hover:bg-black/80 hover:text-white border-none rounded-full">
-            Lancez-vous
-          </button>
+          <Link to="/createboutique">
+            <button className="border my-2 font-bold cursor-pointer w-35 h-[50px] bg-black text-white hover:bg-black/80 hover:text-white border-none rounded-full">
+              Lancez-vous
+            </button>
+          </Link>
 
           {/* HERO IMAGE */}
           <div className="relative w-full h-full mt-10  ">
@@ -74,10 +78,10 @@ const Hero = () => {
             </p>
           </div>
 
-          <button className="text-black font-semibold flex items-center justify-center gap-2 border w-40 h-[60px] rounded-full bg-white cursor-pointer hover:bg-white/90">
+          <div className="text-black font-semibold flex items-center justify-center gap-2 border w-40 h-[60px] rounded-full bg-white cursor-pointer hover:bg-white/90">
             Lancez-Vous
-            <img className="h-4" src={assets.dropdown_icon} alt="" />
-          </button>
+            <ArrowRight size={20} />
+          </div>
         </div>
       </div>
       <SectorCard />
