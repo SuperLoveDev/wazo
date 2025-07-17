@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { assets } from "../assets/assets";
 
 const schema = yup.object().shape({
   Nomdelaboutique: yup.string().required("Nom de la boutique obligatoire"),
@@ -154,7 +155,11 @@ const FormBoutique = () => {
           )}
           {imageFile && imageFile.length > 0 && (
             <img
-              src={URL.createObjectURL(imageFile[0])}
+              src={
+                imageFile && imageFile[0]
+                  ? URL.createObjectURL(imageFile[0])
+                  : assets.uploadImage
+              }
               alt="preview"
               className="w-32 h-32 object-cover rounded-xl mt-2"
             />

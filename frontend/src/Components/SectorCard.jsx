@@ -1,10 +1,10 @@
 import React from "react";
 import { sectorImages } from "../assets/sectors";
-import { assets } from "../assets/assets";
 import Title from "./Title";
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { confiances } from "../assets/assets";
+import { ArrowRight } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 // sector data for mapping sector-card
 const sectorsData = [
@@ -12,7 +12,7 @@ const sectorsData = [
   { name: "Beauté", image: sectorImages.beaute, slug: "beaute" },
   { name: "Couture", image: sectorImages.couture, slug: "couture" },
   { name: "Audio-visuel", image: sectorImages.audio, slug: "audio-visuel" },
-  { name: "Resto", image: sectorImages.resto, slug: "resto" },
+  { name: "Restaurant", image: sectorImages.resto, slug: "resto" },
   { name: "Service", image: sectorImages.service, slug: "service" },
   { name: "Éducation", image: sectorImages.education, slug: "education" },
   { name: "Location", image: sectorImages.location, slug: "location" },
@@ -32,12 +32,17 @@ const confianceImg = [
 
 const SectorCard = () => {
   const navigate = useNavigate();
-
   return (
     <>
       <div className="pb-10">
         <Title text1={"POUR LES"} text2={"PROFESSIONELS"} />
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-4 gap-y-8 mt-8">
+        <div
+          onClick={() => {
+            window.scrollTo(0, 0);
+            navigate("/createboutique");
+          }}
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-4 gap-y-8 mt-8"
+        >
           {/* CARD MAPPING */}
           {sectorsData.map((sector, index) => (
             <motion.div
@@ -45,20 +50,20 @@ const SectorCard = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.97 }}
               className="relative w-full lg:max-w-[400px] xl:max-w-[450px] 2xl:max-w-[500px] h-80 rounded-2xl overflow-hidden shadow-sm cursor-pointer group mx-auto"
-              onClick={() => navigate(`/createboutique/${sector.slug}`)}
             >
               <img
                 src={sector.image}
                 alt={sector.name}
+                loading="lazy"
                 className="w-full h-full object-cover transition-transform duration-300 ease-in-out"
               />
+
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent rounded-2xl group-hover:bg-black/20 transition duration-300"></div>
               <p className="absolute bottom-3 left-4 z-10 text-white font-semibold text-xl">
                 {sector.name}
               </p>
-              <img
-                src={assets.dropdown_icon}
-                alt="Go"
+              <ArrowRight
+                size={20}
                 className="h-8 w-8 p-1 absolute bottom-3 right-4 bg-white border border-white rounded-full group-hover:scale-110 transition-transform duration-300"
               />
             </motion.div>
@@ -72,6 +77,7 @@ const SectorCard = () => {
             <img
               key={index}
               src={img.image}
+              loading="lazy"
               className="max-h-[50px] w-auto h-auto md:max-h-[72px]"
               alt=""
             />

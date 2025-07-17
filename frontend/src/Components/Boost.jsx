@@ -3,7 +3,7 @@ import wazoPayment from "../assets/wazopayment.png";
 import { useNavigate } from "react-router-dom";
 
 const Boost = () => {
-  const creerBoutique = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <div className="my-25 w-full text-2xl">
@@ -11,13 +11,13 @@ const Boost = () => {
         <div className="flex flex-col gap-5">
           <h1 className="font-sans text-4xl font-bold mb-5">
             Avec{" "}
-            <span className="bg-gradient-to-r from-purple-500 via-purple-400 to-purple-300 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-purple-600 via-red-400 to-red-400 bg-clip-text text-transparent">
               Wazo
             </span>{" "}
             ta boutique devient visible en ligne et attire plus de clients dans
             ton quartier, <br />
             tout en bénéficiant du{" "}
-            <span className="bg-gradient-to-r from-purple-500 via-purple-400 to-purple-300 bg-clip-text text-transparent font-bold">
+            <span className="bg-gradient-to-r from-purple-500 to-red-500 bg-clip-text text-transparent font-bold">
               paiement sécurisé et facile
             </span>
           </h1>
@@ -61,11 +61,15 @@ const Boost = () => {
         <img
           src={wazoPayment}
           className="min-w-[30%] sm:w-auto h-[500px] object-cover rounded-3xl"
-          alt=""
+          loading="lazy"
+          alt="wazo-payment"
         />
       </div>
       <div
-        onClick={() => creerBoutique("/createboutique")}
+        onClick={() => {
+          window.scrollTo(0, 0);
+          navigate("/createboutique");
+        }}
         className="border cursor-pointer bg-purple-400 w-55 h-[60px] flex justify-center items-center my-10 mx-auto text-white rounded-full hover:bg-black transition-transform duration-300"
       >
         <button className="font-sans text-center text-base cursor-pointer">
