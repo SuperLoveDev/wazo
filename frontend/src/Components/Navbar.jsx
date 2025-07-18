@@ -9,9 +9,9 @@ const Navbar = () => {
   const navMenu = [
     { name: "Home", path: "/" },
     { name: "Catalogue", path: "/catalogue" },
-    { name: "Create Boutique", path: "/createboutique" },
-    { name: "Tab De Bord", path: "/tableaubord" },
-    { name: "Contact", path: "/contact" },
+    { name: "Client", path: "/client" },
+    { name: "Vendeur", path: "/creerboutique" },
+    { name: "Mon Tableau", path: "/tableau" },
   ];
 
   const [visible, setVisible] = useState(false);
