@@ -11,7 +11,7 @@ const schema = yup.object().shape({
     .required("mot de passe requis"),
 });
 
-const Login = () => {
+const Client = () => {
   const {
     register,
     handleSubmit,
@@ -25,13 +25,12 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full">
-      <div className="flex flex-col items-center mx-auto">
-        <h1 className="text-4xl">Mon Tableau</h1>
-        <div className="w-1/2">
+    <div className="w-full min-h-[70vh] flex items-center justify-center">
+      <div className="w-full max-w-md p-6">
+        <div className="border border-gray-100 rounded-lg p-6 shadow-2xl">
           <form onSubmit={handleSubmit(formSubmit)}>
-            <div className="mb-3 min-w-[72] text-center">
-              <p>Numero</p>
+            <div className="mb-4">
+              <label className="block mb-2">Numero</label>
               <input
                 {...register("numero")}
                 type="text"
@@ -39,26 +38,28 @@ const Login = () => {
                 className="w-full border border-gray-300 rounded-lg p-3"
               />
               {errors.numero && (
-                <p className="text-red-500 text-sm">{errors.numero.message}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.numero.message}
+                </p>
               )}
             </div>
 
-            <div className="mb-3 min-w-[72] text-center">
-              <p>Mot De Passe</p>
+            <div className="mb-4">
+              <label className="block mb-2">Mot De Passe</label>
               <input
                 {...register("motdepasse")}
-                type="mot de passe"
+                type="password"
                 placeholder="mot de passe"
                 className="w-full border border-gray-300 rounded-lg p-3"
               />
               {errors.motdepasse && (
-                <p className="text-red-500 text-sm">
+                <p className="text-red-500 text-sm mt-1">
                   {errors.motdepasse.message}
                 </p>
               )}
             </div>
             <button
-              className="w-full border bg-black text-white p-2 rounded-lg mt-5"
+              className="w-full bg-black text-white p-3 rounded-lg mt-4 hover:bg-gray-800 transition-colors"
               type="submit"
             >
               Connexion
@@ -70,4 +71,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Client;

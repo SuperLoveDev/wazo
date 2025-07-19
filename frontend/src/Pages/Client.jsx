@@ -4,6 +4,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 const schema = yup.object().shape({
+  nomcomplet: yup.string().required("votre nom est requi"),
   numero: yup.string().required("votre numero est requis"),
   motdepasse: yup
     .string()
@@ -29,6 +30,20 @@ const Client = () => {
       <div className="w-full max-w-md p-6">
         <div className="border border-gray-100 rounded-lg p-6 shadow-2xl">
           <form onSubmit={handleSubmit(formSubmit)}>
+            <div className="mb-4">
+              <label className="block mb-2">Nom Complet</label>
+              <input
+                {...register("nomcomplet")}
+                type="text"
+                placeholder="votre nom"
+                className="w-full border border-gray-300 rounded-lg p-3"
+              />
+              {errors.numero && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.numero.message}
+                </p>
+              )}
+            </div>
             <div className="mb-4">
               <label className="block mb-2">Numero</label>
               <input

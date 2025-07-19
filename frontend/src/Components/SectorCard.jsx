@@ -39,7 +39,7 @@ const SectorCard = () => {
         <div
           onClick={() => {
             window.scrollTo(0, 0);
-            navigate("/createboutique");
+            navigate("/creerboutique");
           }}
           className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-4 gap-y-8 mt-8"
         >

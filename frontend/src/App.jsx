@@ -16,7 +16,7 @@ import Order from "./Pages/Dashboard/Order";
 import Statistic from "./Pages/Dashboard/Statistic";
 import Setting from "./Pages/Dashboard/Setting";
 import Client from "./Pages/Client";
-import Login from "./Components/DashboardCompo/Login";
+import Login from "./Pages/Login";
 
 function App() {
   //const [token, setToken] = useState("abc");
@@ -31,6 +31,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/client" element={<Client />} />
           <Route path="/catalogue" element={<Catalog />} />
           <Route path="/catalogue/:id" element={<CatalogDetails />} />
           <Route path="/creerboutique" element={<CreateShop />} />
@@ -41,7 +42,8 @@ function App() {
             <Route path="stats" element={<Statistic />} />
             <Route path="setting" element={<Setting />} />
           </Route>
-          <Route path="/client" element={<Client />} />
+          <Route path="login" element={<Login />} />
+
           <Route path="/cart" element={<Cart />} />
         </Routes>
         <Footer />

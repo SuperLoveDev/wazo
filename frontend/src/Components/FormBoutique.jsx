@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 
 const schema = yup.object().shape({
@@ -40,7 +40,7 @@ const FormBoutique = () => {
       console.log(data);
 
       toast.success("🎉 Boutique créée avec succès !", {
-        onClose: () => navigate("/tableaubord"),
+        onClose: () => navigate("/tableau"),
         bodyClassName: "text-3xl",
         position: "top-center",
         autoClose: 5000,
@@ -173,6 +173,15 @@ const FormBoutique = () => {
           Creer ma boutique →
         </button>
       </form>
+
+      <Link to="/login" className="px-4">
+        <p className="text-2xl my-5">
+          Avez-vous déjà un compte ?{" "}
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-red-500 font-medium cursor-pointer">
+            Cliquez ici
+          </span>
+        </p>
+      </Link>
     </div>
   );
 };
