@@ -5,6 +5,7 @@ import connectDB from "./config/mongodb.js";
 import connectCloudinary from "./config/cloudinary.js";
 import boutiqueRouter from "./routes/boutiqueRoute.js";
 import userRouter from "./routes/userRoute.js";
+import tableauRouter from "./routes/dashboardRoute.js";
 
 // APP CONFIGURATION
 const app = express();
@@ -25,6 +26,7 @@ connectCloudinary();
 // API ENDPOINT
 app.use("/api/user", userRouter);
 app.use("/api/creerboutique", boutiqueRouter);
+app.use("/api/boutique", tableauRouter);
 
 app.get("/", (req, res) => {
   res.send("My app is fully working, Yeah !");

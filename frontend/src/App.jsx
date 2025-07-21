@@ -17,6 +17,7 @@ import Statistic from "./Pages/Dashboard/Statistic";
 import Setting from "./Pages/Dashboard/Setting";
 import Client from "./Pages/Client";
 import Login from "./Pages/Login";
+import BoutiqueOwner from "./Components/BoutiqueOwner";
 
 function App() {
   //const [token, setToken] = useState("abc");
@@ -35,6 +36,7 @@ function App() {
           <Route path="/catalogue" element={<Catalog />} />
           <Route path="/catalogue/:id" element={<CatalogDetails />} />
           <Route path="/creerboutique" element={<CreateShop />} />
+          <Route path="/boutique" element={<BoutiqueOwner />} />
           <Route path="/tableau" element={<Tableau />}>
             <Route path="list" element={<List />} />
             <Route path="add" element={<Add />} />

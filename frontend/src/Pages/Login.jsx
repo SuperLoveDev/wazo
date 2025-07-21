@@ -2,6 +2,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
   numero: yup.string().required("votre numero est requis"),
@@ -12,25 +14,45 @@ const schema = yup.object().shape({
 });
 
 const Client = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
   });
 
   const formSubmit = (data) => {
     console.log(data);
+
+    toast.success("Patienter !", {
+      onClose: () => navigate("/boutique"),
+      bodyClassName: "text-3xl",
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    reset();
   };
 
   return (
-    <div className="w-full min-h-[70vh] flex items-center justify-center">
+    <div className="w-full min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-purple-100 to-red-50">
       <div className="w-full max-w-md p-6">
+        <p className="text-center text-5xl mb-15">Wazo</p>
         <div className="border border-gray-100 rounded-lg p-6 shadow-2xl">
           <form onSubmit={handleSubmit(formSubmit)}>
-            <div className="mb-4">
-              <label className="block mb-2">Numero</label>
+            <p className="text-center text-gray-700 mb-10">
+              Se connecter a ma boutique Wazo
+            </p>
+            <div className="mb-10">
+              {/* <label className="block mb-2">Numero</label> */}
               <input
                 {...register("numero")}
                 type="text"
@@ -44,8 +66,8 @@ const Client = () => {
               )}
             </div>
 
-            <div className="mb-4">
-              <label className="block mb-2">Mot De Passe</label>
+            <div className="mb-10">
+              {/* <label className="block mb-2">Mot De Passe</label> */}
               <input
                 {...register("motdepasse")}
                 type="password"
@@ -59,7 +81,7 @@ const Client = () => {
               )}
             </div>
             <button
-              className="w-full bg-black text-white p-3 rounded-lg mt-4 hover:bg-gray-800 transition-colors"
+              className="w-full bg-black text-white p-3 rounded-lg mt-2 hover:bg-gray-800 transition-colors"
               type="submit"
             >
               Connexion

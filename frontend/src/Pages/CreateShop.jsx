@@ -12,7 +12,7 @@ const CreateShop = ({ handleSubmit }) => {
         <div className="flex-1 rounded-2xl">
           <img
             src={imageform}
-            className="w-full rounded-2xl h-full object-cover max-w-[530px] sticky"
+            className="w-full rounded-2xl h-full object-cover max-w-[540px] sticky"
             alt="Créer sa boutique sur Wazo"
             loading="lazy"
           />
