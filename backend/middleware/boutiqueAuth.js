@@ -1,25 +1,26 @@
 import jwt from "jsonwebtoken";
-import Boutique from "../models/boutiqueModel.js";
 
-const protect = async (req, res, next) => {
-  let token =
-    req.headers.authorization && req.headers.authorization.startsWith("Bearer")
-      ? req.headers.authorization.split("")[1]
-      : null;
-
-  if (!token) {
-    res
-      .status(401)
-      .json({ succcess: false, message: "Non-autorisé, pas de compte" });
-  }
-
+const tableauAuth = async (req, res, next) => {
   try {
+    const { token } = req.headers;
+    if (!token) {
+      res
+        .status(401)
+        .json({ succcess: false, message: "Non-autorisé, pas de compte" });
+    }
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = await Boutique.findById(decoded.id).select("-password");
-    // next();
+    if (
+      token_decode !==
+      process.env.ADMIN_NUMERO + process.env.ADMIN_MOTDEPASSE
+    ) {
+      res
+        .status(401)
+        .json({ succcess: false, message: "Non-autorisé, pas de compte" });
+    }
+    next();
   } catch (error) {
     res.status(401).json({ success: false, message: "pas de compte" });
   }
 };
 
-export default protect;
+export default tableauAuth;

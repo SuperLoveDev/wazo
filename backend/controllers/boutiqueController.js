@@ -52,7 +52,7 @@ const boutiqueUser = async (req, res) => {
 };
 
 // boutiquelogin
-const loginBoutique = async () => {
+const loginBoutique = async (req, res) => {
   try {
     const { whatsapp, motdepasse } = req.body;
     const user = await Boutique.findOne({ whatsapp });
@@ -76,4 +76,29 @@ const loginBoutique = async () => {
   }
 };
 
-export { boutiqueUser, loginBoutique };
+const boutiqueTableau = async (req, res) => {
+  try {
+    const { numero, motdepasse } = req.body;
+    if (
+      numero === process.env.ADMIN_NUMERO &&
+      motdepasse === process.env.ADMIN_MOTDEPASSE
+    ) {
+      const payload = { numero, role: "admin" };
+
+      // Optionally set expiration (e.g., 7 days)
+      const token = jwt.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: "7d",
+      });
+      return res
+        .status(200)
+        .json({ success: true, message: "Tableau verifié", token });
+    } else {
+      return res.status(400).json({ success: false, message: "Pas authorisé" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export { boutiqueUser, loginBoutique, boutiqueTableau };
