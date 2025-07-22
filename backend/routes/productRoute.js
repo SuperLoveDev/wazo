@@ -6,7 +6,6 @@ import {
   updateProduct,
   deleteProduct,
 } from "../controllers/productController.js";
-import protect from "../middleware/boutiqueAuth.js";
 import upload from "../middleware/multer.js";
 
 const productRouter = express.Router();
@@ -24,9 +23,9 @@ productRouter.post(
   ]),
   addProduct
 );
-productRouter.get("/product", protect, listProduct);
-productRouter.get("/product", protect, productById);
-productRouter.put("/product", protect, updateProduct);
-productRouter.delete("/product", protect, deleteProduct);
+productRouter.get("/list", listProduct);
+productRouter.post("/remove", deleteProduct);
+productRouter.post("/productid", productById);
+productRouter.put("/product/:productId", updateProduct);
 
 export default productRouter;

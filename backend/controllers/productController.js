@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from "cloudinary";
 import Product from "../models/productModels.js";
 
+// add product
 const addProduct = async (req, res) => {
   try {
     const { article, description, price, image } = req.body;
@@ -43,12 +44,61 @@ const addProduct = async (req, res) => {
   }
 };
 
-const listProduct = async () => {};
+// listing product
+const listProduct = async (req, res) => {
+  try {
+    const products = await Product.find({});
+    res.status(200).json({ success: true, products });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 
-const productById = async () => {};
+// removing product
+const deleteProduct = async (req, res) => {
+  try {
+    await Product.findByIdAndDelete(req.body.id);
+    res.status(200).json({ success: true, message: "produit supprimer" });
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: error.message });
+  }
+};
 
-const updateProduct = async () => {};
+// get single or product by id
+const productById = async (req, res) => {
+  try {
+    const { productId } = req.body;
+    const product = await Product.findById(productId);
+    res.status(200).json({ success: true, product });
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: error.message });
+  }
+};
 
-const deleteProduct = async () => {};
+// update a product
+const updateProduct = async (req, res) => {
+  try {
+    const { productId } = req.body;
+    const { article, description, price } = req.body;
+    const updateFields = {};
+
+    if (article) updateFields.article = article;
+    if (description) updateFields.description = description;
+    if (price) updateFields.price = price;
+
+    const updateItem = await Product.findByIdAndUpdate(
+      productId,
+      { $set: updateFields },
+      { new: true, runValidators: true }
+    );
+    res.status(200).json({ success: true, updateItem });
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: error.message });
+  }
+};
 
 export { addProduct, listProduct, productById, updateProduct, deleteProduct };
