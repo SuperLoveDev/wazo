@@ -6,6 +6,7 @@ import connectCloudinary from "./config/cloudinary.js";
 import boutiqueRouter from "./routes/boutiqueRoute.js";
 import userRouter from "./routes/userRoute.js";
 import productRouter from "./routes/productRoute.js";
+import { getAllBoutiques } from "./controllers/boutiqueController.js";
 
 // APP CONFIGURATION
 const app = express();
@@ -15,7 +16,7 @@ const port = process.env.PORT || 4000;
 app.use(express.json());
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })

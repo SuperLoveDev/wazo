@@ -5,7 +5,6 @@ import { ShopContext } from "../Context/ShopContext";
 import InputBar from "./InputBar";
 
 const BoutiqueCard = ({ boutiqueId }) => {
-  // IMPORTING BOUTIQUE DATA FROM CONTEXT
   const { boutiques, inputValue } = useContext(ShopContext);
 
   const filterList = [
@@ -22,18 +21,15 @@ const BoutiqueCard = ({ boutiqueId }) => {
     "FITNESS",
   ];
 
-  // VARIABLES FOR FILTERS LIST ON MOBILE PHONE
   const [showFilter, setShowFilter] = useState(false);
+  const [selectedFiltered, setSelectedFiltered] = useState("TOUS");
 
-  // VARIABLES FOR FILTERING BOUTIQUE CATEGORIES & FUNCTION
-  const [selectedfiltered, setSelectedFiltered] = useState("TOUS");
   const filteredBoutique = useMemo(() => {
-    return selectedfiltered === "TOUS"
+    return selectedFiltered === "TOUS"
       ? boutiques
-      : boutiques.filter((b) => b.category === selectedfiltered);
-  }, [boutiques, selectedfiltered]);
+      : boutiques.filter((b) => b.category === selectedFiltered);
+  }, [boutiques, selectedFiltered]);
 
-  // DYNAMIC SEARCHING FOR A BOUTIQUE OR PRODUCTS
   const searchingBoutique = useMemo(() => {
     if (!inputValue) return null;
 
@@ -53,11 +49,10 @@ const BoutiqueCard = ({ boutiqueId }) => {
   }, [boutiques, inputValue]);
 
   const boutiqueDisplay = useMemo(() => {
-    if (boutiqueId)
-      return (
-        boutiqueId ===
-        boutiques.filter((boutique) => boutique.id === boutiqueId)
-      );
+    if (boutiqueId) {
+      const found = boutiques.find((boutique) => boutique._id === boutiqueId);
+      return found ? [found] : [];
+    }
     if (inputValue) return searchingBoutique;
     return filteredBoutique;
   }, [boutiqueId, boutiques, inputValue, searchingBoutique, filteredBoutique]);
@@ -77,7 +72,7 @@ const BoutiqueCard = ({ boutiqueId }) => {
               className={`h-4 sm:hidden cursor-pointer ${
                 showFilter ? "rotate-90" : ""
               }`}
-              alt="dropw-icon"
+              alt="dropdown-icon"
             />
           </p>
           <div
@@ -87,40 +82,34 @@ const BoutiqueCard = ({ boutiqueId }) => {
           >
             <p className="font-sans font-medium">CATEGORIE</p>
             <div className="flex flex-col gap-3 text-black my-4">
-              {/* MAPPING MY CATEGORY FILTER LIST */}
-
-              {filterList.map((list, index) => {
-                return (
-                  <p
-                    onClick={() => setSelectedFiltered(list)}
-                    key={index}
-                    className="flex gap-4 font-sans "
-                  >
-                    <input
-                      name="categoryFilter"
-                      onChange={() => setSelectedFiltered(list)}
-                      type="checkbox"
-                      value={list}
-                    />
-                    {list}
-                  </p>
-                );
-              })}
+              {filterList.map((list, index) => (
+                <p
+                  onClick={() => setSelectedFiltered(list)}
+                  key={index}
+                  className="flex gap-4 font-sans cursor-pointer"
+                >
+                  <input
+                    name="categoryFilter"
+                    onChange={() => setSelectedFiltered(list)}
+                    type="radio"
+                    checked={selectedFiltered === list}
+                  />
+                  {list}
+                </p>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* BOUTIQUE-CARD */}
         {boutiqueDisplay && boutiqueDisplay.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 rounded-2xl">
-            {/* RENDERING BOUTIQUE AND SELECTED CATEGORY */}
             {boutiqueDisplay.map((boutique) => (
-              <div key={boutique.id} className="h-full">
+              <div key={boutique._id} className="h-full">
                 <Card
-                  id={boutique.id}
+                  id={boutique._id}
                   image={boutique.image}
                   name={boutique.name}
-                  rating={boutique.rating.stars}
+                  description={boutique.description}
                   article={boutique.article}
                   adresse={boutique.adresse}
                   whatsapp={boutique.whatsapp}

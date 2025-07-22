@@ -1,4 +1,5 @@
 import Boutique from "../models/boutiqueModel.js";
+import { v2 as cloudinary } from "cloudinary";
 import validator from "validator";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
@@ -10,34 +11,51 @@ const createToken = (id) => {
 //Router creating a boutique
 const boutiqueUser = async (req, res) => {
   try {
-    const {
-      name,
-      description,
-      category,
-      adresse,
-      whatsapp,
-      image,
-      motdepasse,
-    } = req.body;
+    const { name, description, category, adresse, whatsapp, motdepasse } =
+      req.body;
+
+    // verifying if the boutique user exit
     const exists = await Boutique.findOne({ whatsapp });
     if (exists) {
-      return res.json({ success: false, message: "utilisateur existant" });
-    }
-    if (!validator.isNumeric(whatsapp)) {
-      return res.json({ success: false, message: "Entrez un numero valide" });
+      return res.json({ success: false, message: "Utilisateur existant" });
     }
 
-    // Hash du mot de passe
+    // numero verification
+    if (!validator.isNumeric(whatsapp)) {
+      return res.json({ success: false, message: "Entrez un numéro valide" });
+    }
+
+    // image verification
+    if (!req.file) {
+      return res.json({ success: false, message: "Image requise." });
+    }
+
+    // Upload to Cloudinary
+    const result = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "boutiques" },
+        (error, result) => {
+          if (error) return reject(error);
+          resolve(result);
+        }
+      );
+      stream.end(req.file.buffer);
+    });
+
+    const imageUrl = result.secure_url;
+
+    // hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(motdepasse, salt);
 
+    // boutique creation
     const newBoutique = new Boutique({
       name,
       description,
       category,
       adresse,
       whatsapp,
-      image,
+      image: imageUrl,
       motdepasse: hashedPassword,
     });
 
@@ -46,8 +64,19 @@ const boutiqueUser = async (req, res) => {
     const token = createToken(savedBoutique._id);
     res.json({ success: true, token });
   } catch (error) {
-    console.error("numero invalide", error);
+    console.error("Erreur création boutique:", error);
     res.json({ success: false, msg: error.message });
+  }
+};
+
+// get all boutique catalogue for catalog page after registration
+const getAllBoutiques = async (req, res) => {
+  try {
+    const boutiques = await Boutique.find();
+    res.status(200).json({ success: true, boutiques });
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: error.message });
   }
 };
 
@@ -101,4 +130,4 @@ const boutiqueTableau = async (req, res) => {
   }
 };
 
-export { boutiqueUser, loginBoutique, boutiqueTableau };
+export { boutiqueUser, getAllBoutiques, loginBoutique, boutiqueTableau };

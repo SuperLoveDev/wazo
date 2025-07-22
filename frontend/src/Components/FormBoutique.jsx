@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
+import axios from "axios";
 
 const schema = yup.object().shape({
   Nomdelaboutique: yup.string().required("Nom de la boutique obligatoire"),
@@ -17,6 +18,7 @@ const schema = yup.object().shape({
     .string()
     .matches(/^\+225\d{8}$/, "Le numéro doit être au format +225XXXXXXXX")
     .required("Le numéro WhatsApp est requis."),
+  motdepasse: yup.string().required("veuillez entrer un mot de passe"),
   Image: yup.mixed().required("L'image est requise."),
 });
 
@@ -36,20 +38,39 @@ const FormBoutique = () => {
   const imageFile = watch("Image");
 
   const formSubmit = async (data) => {
-    try {
-      console.log(data);
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-      toast.success("🎉 Boutique créée avec succès !", {
-        onClose: () => navigate("/tableau"),
-        bodyClassName: "text-3xl",
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+    try {
+      const formData = new FormData();
+      formData.append("name", data.Nomdelaboutique);
+      formData.append("description", data.Description);
+      formData.append("category", data.Category);
+      formData.append("adresse", data.Adresse);
+      formData.append("whatsapp", data.Whatsapp);
+      formData.append("motdepasse", "123456");
+      formData.append("image", data.Image[0]);
+
+      const response = await axios.post(
+        `${backendUrl}/api/creerboutique/create`,
+        formData,
+        { headers: { "content-Type": "multipart/form-data" } }
+      );
+
+      console.log("Réponse du backend :", response.data);
+
+      if (response.data.success) {
+        toast.success("🎉 Boutique créée avec succès !", {
+          onClose: () => navigate("/tableau"),
+          bodyClassName: "text-3xl",
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
 
       reset();
     } catch (error) {
@@ -140,6 +161,17 @@ const FormBoutique = () => {
           />
           {errors.Whatsapp && (
             <p className="text-red-500 text-sm">{errors.Whatsapp.message}</p>
+          )}
+        </div>
+
+        <div>
+          <input
+            {...register("motdepasse")}
+            placeholder="creer votre mot de passe"
+            className="border p-2 rounded-xl w-full"
+          />
+          {errors.motdepasse && (
+            <p className="text-red-500 text-sm">{errors.motdepasse.message}</p>
           )}
         </div>
 
