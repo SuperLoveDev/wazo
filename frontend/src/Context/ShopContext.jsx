@@ -9,7 +9,8 @@ const ShopContextProvider = ({ children }) => {
   const [showInput, setShowInput] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
-  // SEARCHING A PRODUCT OR BOUTIQUE
+  // CONNECTING BACKEND WITH FRONTEND
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const value = useMemo(
     () => ({
@@ -18,8 +19,9 @@ const ShopContextProvider = ({ children }) => {
       setShowInput,
       inputValue,
       setInputValue,
+      backendUrl,
     }),
-    [showInput, inputValue]
+    [showInput, inputValue, backendUrl]
   );
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;
