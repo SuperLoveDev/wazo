@@ -8,6 +8,7 @@ import TabDeBord from "../Pages/Dashboard/Tableau";
 const BoutiqueOwner = () => {
   const navigate = useNavigate();
   const { boutiques } = useContext(ShopContext);
+  const [showStat, setShowStat] = useState(false);
 
   const boutique = boutiques[0];
 
@@ -15,8 +16,6 @@ const BoutiqueOwner = () => {
     type: "image",
     src: boutique?.image || "",
   });
-
-  const [showStat, setShowStat] = useState(false);
 
   return (
     <>
@@ -48,7 +47,6 @@ const BoutiqueOwner = () => {
                       size={20}
                       className="text-yellow-500 fill-yellow-500"
                     />
-                    <span>{boutique.rating?.stars || 0} / 5</span>
                   </div>
                 </h1>
                 <p className="text-sm text-gray-600 font-bold line-clamp-2 border border-gray-300 bg-white rounded-2xl p-2">

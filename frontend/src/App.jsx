@@ -16,18 +16,12 @@ import Order from "./Pages/Dashboard/Order";
 import Statistic from "./Pages/Dashboard/Statistic";
 import Setting from "./Pages/Dashboard/Setting";
 import Client from "./Pages/Client";
-import Login from "./Pages/Login";
+import LoginBoutique from "./Pages/LoginBoutique";
 import BoutiqueOwner from "./Components/BoutiqueOwner";
 
 function App() {
-  //const [token, setToken] = useState("abc");
-
   return (
     <>
-      {/* <div className="">
-        {token === "" ? <Login setToken={setToken} /> : <TabDeBord />}
-      </div> */}
-
       <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw] ">
         <Navbar />
         <Routes>
@@ -44,7 +38,7 @@ function App() {
             <Route path="stats" element={<Statistic />} />
             <Route path="setting" element={<Setting />} />
           </Route>
-          <Route path="login" element={<Login />} />
+          <Route path="loginboutique" element={<LoginBoutique />} />
 
           <Route path="/cart" element={<Cart />} />
         </Routes>

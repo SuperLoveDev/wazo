@@ -14,10 +14,7 @@ const schema = yup.object().shape({
     .required("Entrer une description de votre activité !"),
   Category: yup.string().required("Veuillez choisir une catégorie"),
   Adresse: yup.string().required("L'adresse est requise !"),
-  Whatsapp: yup
-    .string()
-    .matches(/^\+225\d{8}$/, "Le numéro doit être au format +225XXXXXXXX")
-    .required("Le numéro WhatsApp est requis."),
+  Whatsapp: yup.string().required("Le numéro WhatsApp est requis."),
   motdepasse: yup.string().required("veuillez entrer un mot de passe"),
   Image: yup.mixed().required("L'image est requise."),
 });
@@ -47,7 +44,7 @@ const FormBoutique = () => {
       formData.append("category", data.Category);
       formData.append("adresse", data.Adresse);
       formData.append("whatsapp", data.Whatsapp);
-      formData.append("motdepasse", "123456");
+      formData.append("motdepasse", data.motdepasse);
       formData.append("image", data.Image[0]);
 
       const response = await axios.post(
@@ -55,8 +52,6 @@ const FormBoutique = () => {
         formData,
         { headers: { "content-Type": "multipart/form-data" } }
       );
-
-      console.log("Réponse du backend :", response.data);
 
       if (response.data.success) {
         toast.success("🎉 Boutique créée avec succès !", {
@@ -206,7 +201,7 @@ const FormBoutique = () => {
         </button>
       </form>
 
-      <Link to="/login" className="px-4">
+      <Link to="/loginboutique" className="px-4">
         <p className="text-2xl my-5">
           Avez-vous déjà un compte ?{" "}
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-red-500 font-medium cursor-pointer">

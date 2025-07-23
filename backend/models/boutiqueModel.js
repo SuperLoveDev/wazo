@@ -5,7 +5,8 @@ const boutiqueSchema = new mongoose.Schema({
   description: { type: String, required: true },
   category: { type: String, required: true },
   adresse: { type: String, required: true },
-  whatsapp: { type: String, required: true },
+  whatsapp: { type: String, required: true, unique: true },
+  motdepasse: { type: String, required: true },
   image: { type: String, required: true },
 });
 

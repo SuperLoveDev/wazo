@@ -4,16 +4,20 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const schema = yup.object().shape({
-  numero: yup.string().required("votre numero est requis"),
+  whatsapp: yup
+    .string()
+    .matches(/^0\d{9}$/, "Numéro invalide (ex: 0780099382)")
+    .required("Votre numéro est requis"),
   motdepasse: yup
     .string()
     .min(4, "Min 4 caractèers")
     .required("mot de passe requis"),
 });
 
-const Client = () => {
+const LoginBoutique = () => {
   const navigate = useNavigate();
 
   const {
@@ -25,21 +29,46 @@ const Client = () => {
     resolver: yupResolver(schema),
   });
 
-  const formSubmit = (data) => {
-    console.log(data);
+  const formSubmit = async (data) => {
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    try {
+      const whatsappNormalized = data.whatsapp.replace(/\D/g, "");
 
-    toast.success("Patienter !", {
-      onClose: () => navigate("/boutique"),
-      bodyClassName: "text-3xl",
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-    reset();
+      const response = await axios.post(
+        `${backendUrl}/api/creerboutique/loginboutique`,
+        {
+          whatsapp: whatsappNormalized,
+          motdepasse: data.motdepasse,
+        }
+      );
+      if (response.data.success) {
+        const token = response.data.token;
+        localStorage.setItem("boutiqueToken", token);
+
+        toast.success("Connexion réussie!", {
+          bodyClassName: "text-3xl",
+          position: "top-center",
+          autoClose: 2000,
+          onClose: () => navigate(`/boutique`),
+        });
+
+        reset();
+      } else {
+        toast.error(response.data.message || "Erreur de connexion", {
+          bodyClassName: "text-xl",
+          position: "top-center",
+        });
+      }
+    } catch (error) {
+      console.error("Erreur lors de la connexion:", error);
+      toast.error(
+        error.response?.data?.message || "Erreur serveur lors de la connexion",
+        {
+          bodyClassName: "text-xl",
+          position: "top-center",
+        }
+      );
+    }
   };
 
   return (
@@ -54,14 +83,14 @@ const Client = () => {
             <div className="mb-10">
               {/* <label className="block mb-2">Numero</label> */}
               <input
-                {...register("numero")}
+                {...register("whatsapp")}
                 type="text"
                 placeholder="votre numero"
                 className="w-full border border-gray-300 rounded-lg p-3"
               />
-              {errors.numero && (
+              {errors.whatsapp && (
                 <p className="text-red-500 text-sm mt-1">
-                  {errors.numero.message}
+                  {errors.whatsapp.message}
                 </p>
               )}
             </div>
@@ -93,4 +122,4 @@ const Client = () => {
   );
 };
 
-export default Client;
+export default LoginBoutique;

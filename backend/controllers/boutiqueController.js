@@ -69,7 +69,7 @@ const boutiqueUser = async (req, res) => {
   }
 };
 
-// get all boutique catalogue for catalog page after registration
+// get all boutique catalogue for catalog page
 const getAllBoutiques = async (req, res) => {
   try {
     const boutiques = await Boutique.find();
@@ -84,24 +84,54 @@ const getAllBoutiques = async (req, res) => {
 const loginBoutique = async (req, res) => {
   try {
     const { whatsapp, motdepasse } = req.body;
-    const user = await Boutique.findOne({ whatsapp });
-    if (!user) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Utilisateur non trouvé" });
+
+    if (!whatsapp || !motdepasse) {
+      return res.status(400).json({
+        success: false,
+        message: "WhatsApp et mot de passe requis",
+      });
     }
-    const isMatch = await bcrypt.compare(motdepasse, user.motdepasse);
+
+    const boutique = await Boutique.findOne({ whatsapp }).select("+motdepasse");
+
+    if (!boutique) {
+      return res.status(404).json({
+        success: false,
+        message: "Boutique non trouvée",
+      });
+    }
+
+    if (!boutique.motdepasse) {
+      return res.status(400).json({
+        success: false,
+        message: "Compte non configuré correctement",
+      });
+    }
+
+    const isMatch = await bcrypt.compare(motdepasse, boutique.motdepasse);
 
     if (!isMatch) {
-      return res.json({ success: false, message: "Mot de passe incorrect" });
+      return res.status(401).json({
+        success: false,
+        message: "Mot de passe incorrect",
+      });
     }
+
     const token = jwt.sign({ id: boutique._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
-    res.json({ success: true, token });
+
+    res.json({
+      success: true,
+      token,
+      id: boutique._id,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Erreur serveur" });
+    console.error("Erreur login:", error);
+    res.status(500).json({
+      success: false,
+      message: "Erreur serveur",
+    });
   }
 };
 

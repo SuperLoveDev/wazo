@@ -11,7 +11,7 @@ const boutiqueRouter = express.Router();
 
 boutiqueRouter.post("/create", upload.single("image"), boutiqueUser);
 boutiqueRouter.get("/boutique", getAllBoutiques);
-boutiqueRouter.post("/login", loginBoutique);
+boutiqueRouter.post("/loginboutique", loginBoutique);
 boutiqueRouter.post("/tableau", boutiqueTableau);
 
 export default boutiqueRouter;
