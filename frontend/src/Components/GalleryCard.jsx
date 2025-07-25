@@ -16,9 +16,9 @@ const GalleryCard = ({ product, setClickMedia, boutique }) => {
             {product.price.toLocaleString()} FCFA
           </p>
         )}
-        <div className="flex justify-between items-center mt-1">
+        <div className="flex justify-between gap-1 items-center mt-1">
           <p className="border border-gray-300 text-xs rounded-full cursor-pointer p-1">
-            ajouter +
+            commander
           </p>
           <a
             href={`https://wa.me/${

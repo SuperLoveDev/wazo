@@ -1,6 +1,6 @@
 import "./App.css";
 import Navbar from "./Components/Navbar";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./Pages/Home";
 import Catalog from "./Pages/Catalog";
 import CreateShop from "./Pages/CreateShop";
@@ -20,10 +20,15 @@ import LoginBoutique from "./Pages/LoginBoutique";
 import BoutiqueOwner from "./Components/BoutiqueOwner";
 
 function App() {
+  const location = useLocation();
+  const hideNavbarRoutes = ["/creerboutique", "/loginboutique"];
+
+  const hideNavbar = hideNavbarRoutes.includes(location.pathname);
+
   return (
     <>
       <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw] ">
-        <Navbar />
+        {!hideNavbar && <Navbar />}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/client" element={<Client />} />
@@ -31,6 +36,7 @@ function App() {
           <Route path="/catalogue/:id" element={<CatalogDetails />} />
           <Route path="/creerboutique" element={<CreateShop />} />
           <Route path="/boutique" element={<BoutiqueOwner />} />
+          <Route path="loginboutique" element={<LoginBoutique />} />
           <Route path="/tableau" element={<Tableau />}>
             <Route path="list" element={<List />} />
             <Route path="add" element={<Add />} />
@@ -38,7 +44,6 @@ function App() {
             <Route path="stats" element={<Statistic />} />
             <Route path="setting" element={<Setting />} />
           </Route>
-          <Route path="loginboutique" element={<LoginBoutique />} />
 
           <Route path="/cart" element={<Cart />} />
         </Routes>

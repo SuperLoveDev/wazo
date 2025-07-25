@@ -1,51 +1,67 @@
-import { createContext, useEffect, useMemo } from "react";
-import { useState } from "react";
-
+import { createContext, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 
 export const ShopContext = createContext();
 
 const ShopContextProvider = ({ children }) => {
-  // VARIABLES TO HANDLE INPUT COMPONENT
   const [showInput, setShowInput] = useState(false);
   const [inputValue, setInputValue] = useState("");
-
-  // CONNECTING BACKEND WITH FRONTEND
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
-  //  NEW DYNAMIC BOUTIQUES STATE
   const [boutiques, setBoutiques] = useState([]);
+  const [selectedBoutique, setSelectedBoutique] = useState(null);
 
+  //TO SHOW BOUTIQUE DYNAMICALLY
   useEffect(() => {
-    const fetcheBoutiques = async () => {
+    const fetchBoutiques = async () => {
       try {
         const response = await axios.get(
           `${backendUrl}/api/creerboutique/boutique`
         );
         if (response.data.success) {
           setBoutiques(response.data.boutiques);
-        } else {
-          console.log("Erreur lor du chargement");
+
+          if (response.data.boutiques.length > 0) {
+            setSelectedBoutique(response.data.boutiques[0]._id);
+          }
         }
       } catch (error) {
         console.error("Erreur lors de la récupération des boutiques", error);
       }
     };
-    fetcheBoutiques();
+    fetchBoutiques();
   }, [backendUrl]);
+
+  // TO SEE PRODUCT ADDED FROM THE BOUTIQUEOWNER DASHBOARD
+  const updateBoutiqueProducts = (boutiqueId, newProduct) => {
+    setBoutiques((prevBoutiques) =>
+      prevBoutiques.map((boutique) =>
+        boutique._id === boutiqueId
+          ? {
+              ...boutique,
+              products: [newProduct, ...(boutique.products || [])],
+            }
+          : boutique
+      )
+    );
+  };
 
   const value = useMemo(
     () => ({
       boutiques,
+      selectedBoutique,
+      setSelectedBoutique,
       showInput,
       setShowInput,
       inputValue,
       setInputValue,
       backendUrl,
+      updateBoutiqueProducts,
+      setBoutiques,
     }),
-    [showInput, inputValue, backendUrl, boutiques]
+    [showInput, inputValue, backendUrl, boutiques, selectedBoutique]
   );
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;
 };
+
 export default ShopContextProvider;

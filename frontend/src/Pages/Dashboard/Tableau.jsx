@@ -3,7 +3,7 @@ import Navbar from "../../Components/DashboardCompo/Navbar";
 import Sidebar from "../../Components/DashboardCompo/Sidebar";
 import { Outlet } from "react-router-dom";
 
-const TabDeBord = () => {
+const Tableau = () => {
   return (
     <div className="rounded-lg bg-gradient-to-r from-purple-200 to-red-200">
       <Navbar />
@@ -18,4 +18,4 @@ const TabDeBord = () => {
   );
 };
 
-export default TabDeBord;
+export default Tableau;

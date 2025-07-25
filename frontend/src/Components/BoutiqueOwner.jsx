@@ -1,21 +1,40 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShopContext } from "../Context/ShopContext";
 import { Star, BarChart2 } from "lucide-react";
 import Gallery from "../Components/Gallery";
-import TabDeBord from "../Pages/Dashboard/Tableau";
+import Tableau from "../Pages/Dashboard/Tableau";
 
 const BoutiqueOwner = () => {
   const navigate = useNavigate();
-  const { boutiques } = useContext(ShopContext);
+  const { boutiques, selectedBoutique } = useContext(ShopContext);
   const [showStat, setShowStat] = useState(false);
 
-  const boutique = boutiques[0];
+  const boutique = boutiques.find((b) => b._id === selectedBoutique);
 
-  const [clickMedia, setClickMedia] = useState({
-    type: "image",
-    src: boutique?.image || "",
-  });
+  const [clickMedia, setClickMedia] = useState(
+    boutique?.image ? { type: "image", src: boutique.image } : null
+  );
+
+  useEffect(() => {
+    if (boutique && boutique.image) {
+      setClickMedia({
+        type: "image",
+        src: boutique.image,
+      });
+    }
+  }, [boutique]);
+
+  if (!boutique) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        Chargement de la boutique...
+      </div>
+    );
+  }
+
+  console.log("Boutique data:", boutique);
+  console.log("Products:", boutique?.products);
 
   return (
     <>
@@ -24,14 +43,14 @@ const BoutiqueOwner = () => {
           <div className="flex flex-col lg:flex-row gap-4">
             {/* IMAGE/VIDEO PRINCIPALE */}
             <div className="flex flex-col gap-4 rounded-xl shadow-xl bg-gray-100 p-4 lg:w-2/3">
-              {clickMedia.type === "image" && (
+              {clickMedia?.type === "image" && (
                 <img
-                  src={clickMedia.src || boutique.image}
+                  src={clickMedia.src}
                   className="w-full max-h-[500px] object-contain rounded-2xl mb-2"
                   alt={boutique.name}
                 />
               )}
-              {clickMedia.type === "video" && (
+              {clickMedia?.type === "video" && (
                 <video
                   src={clickMedia.src}
                   controls
@@ -63,11 +82,14 @@ const BoutiqueOwner = () => {
                   ← Retour
                 </button>
 
-                <div
-                  onClick={() => setShowStat(!showStat)}
-                  className="flex items-center gap-1"
-                >
-                  <button className=" rounded-2xl p-2 text-gray-600 text-sm sm:text-base cursor-pointer">
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => {
+                      navigate("/tableau");
+                      setShowStat((prev) => !prev);
+                    }}
+                    className=" rounded-2xl p-2 text-gray-600 text-sm sm:text-base cursor-pointer"
+                  >
                     Voir 👉🏽
                   </button>
                   <button className="border flex items-center-safe gap-1 border-gray-200 rounded-2xl p-2 text-white text-sm sm:text-base bg-black font-bold transition cursor-pointer">
@@ -88,7 +110,7 @@ const BoutiqueOwner = () => {
           </div>
         </div>
       ) : (
-        <TabDeBord />
+        <Tableau />
       )}
     </>
   );

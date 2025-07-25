@@ -1,53 +1,76 @@
 import { v2 as cloudinary } from "cloudinary";
 import Product from "../models/productModels.js";
+import Boutique from "../models/boutiqueModel.js";
+import streamifier from "streamifier";
 
 // add product
 const addProduct = async (req, res) => {
   try {
-    const { article, description, price, image } = req.body;
-    const image1 = req.files.image1 && req.files.image1[0];
-    const image2 = req.files.image2 && req.files.image2[0];
-    const image3 = req.files.image3 && req.files.image3[0];
-    const image4 = req.files.image4 && req.files.image4[0];
-    const image5 = req.files.image5 && req.files.image5[0];
-    const image6 = req.files.image6 && req.files.image6[0];
+    const { boutiqueId, article, description, price } = req.body;
+    const imageFile = req.file;
 
-    const images = [image1, image2, image3, image4, image5, image6].filter(
-      (img) => img !== undefined
-    );
+    if (!imageFile) {
+      return res.status(400).json({
+        success: false,
+        message: "Image requise",
+      });
+    }
 
-    let imagesUrl = await Promise.all(
-      images.map(async (img) => {
-        let result = await cloudinary.uploader.upload(img.path, {
-          resource_type: "image",
-        });
-        return result.secure_url;
-      })
-    );
+    // Upload image to Cloudinary
+    const streamUpload = (req) => {
+      return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { resource_type: "image", folder: "products" },
+          (error, result) => {
+            if (result) {
+              resolve(result);
+            } else {
+              reject(error);
+            }
+          }
+        );
+        streamifier.createReadStream(req.file.buffer).pipe(stream);
+      });
+    };
 
+    const result = await streamUpload(req);
+
+    // Create new product
     const productData = {
       article,
       description,
       price: Number(price),
-      image: imagesUrl,
+      image: result.secure_url,
+      boutique: boutiqueId,
       date: Date.now(),
     };
 
-    console.log(productData);
     const product = new Product(productData);
-    await product.save();
+    const savedProduct = await product.save();
 
-    res.json({ success: true, message: "Produit Ajouté" });
+    // Update boutique with populated products
+    const updatedBoutique = await Boutique.findByIdAndUpdate(
+      boutiqueId,
+      { $push: { products: savedProduct._id } },
+      { new: true }
+    ).populate("products");
+
+    res.json({
+      success: true,
+      message: "Produit ajouté avec succès",
+      product: savedProduct,
+      boutique: updatedBoutique, // Send back the fully updated boutique
+    });
   } catch (error) {
     console.error(error);
-    res.json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
 // listing product
 const listProduct = async (req, res) => {
   try {
-    const products = await Product.find({});
+    const products = await Product.find({}).sort({ createdAt: -1 });
     res.status(200).json({ success: true, products });
   } catch (error) {
     console.error(error);
@@ -58,25 +81,46 @@ const listProduct = async (req, res) => {
 // removing product
 const deleteProduct = async (req, res) => {
   try {
-    await Product.findByIdAndDelete(req.body.id);
-    res.status(200).json({ success: true, message: "produit supprimer" });
+    const productId = req.params.id;
+    const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+
+    if (!deletedProduct) {
+      return res.status(404).json({
+        success: false,
+        message: "Produit non trouvé",
+      });
+    }
+
+    await Boutique.updateMany(
+      { products: productId },
+      { $pull: { products: productId } }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Produit supprimé avec succès",
+      deletedId: deletedProduct._id,
+    });
   } catch (error) {
     console.error(error);
-    res.json({ success: false, message: error.message });
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
-// get single or product by id
-const productById = async (req, res) => {
-  try {
-    const { productId } = req.body;
-    const product = await Product.findById(productId);
-    res.status(200).json({ success: true, product });
-  } catch (error) {
-    console.error(error);
-    res.json({ success: false, message: error.message });
-  }
-};
+// get single or product by id // for future purpose
+// const productById = async (req, res) => {
+//   try {
+//     const { productId } = req.body;
+//     const product = await Product.findById(productId);
+//     res.status(200).json({ success: true, product });
+//   } catch (error) {
+//     console.error(error);
+//     res.json({ success: false, message: error.message });
+//   }
+// };
 
 // update a product
 const updateProduct = async (req, res) => {
@@ -101,4 +145,4 @@ const updateProduct = async (req, res) => {
   }
 };
 
-export { addProduct, listProduct, productById, updateProduct, deleteProduct };
+export { addProduct, listProduct, updateProduct, deleteProduct };

@@ -3,13 +3,13 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const schema = yup.object().shape({
   whatsapp: yup
     .string()
-    .matches(/^0\d{9}$/, "Numéro invalide (ex: 0780099382)")
+    .matches(/^0\d{9}$/, "Numéro invalide (ex: 0707070707)")
     .required("Votre numéro est requis"),
   motdepasse: yup
     .string()
@@ -72,52 +72,69 @@ const LoginBoutique = () => {
   };
 
   return (
-    <div className="w-full min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-purple-100 to-red-50">
-      <div className="w-full max-w-md p-6">
-        <p className="text-center text-5xl mb-15">Wazo</p>
-        <div className="border border-gray-100 rounded-lg p-6 shadow-2xl">
-          <form onSubmit={handleSubmit(formSubmit)}>
-            <p className="text-center text-gray-700 mb-10">
-              Se connecter a ma boutique Wazo
-            </p>
-            <div className="mb-10">
-              {/* <label className="block mb-2">Numero</label> */}
-              <input
-                {...register("whatsapp")}
-                type="text"
-                placeholder="votre numero"
-                className="w-full border border-gray-300 rounded-lg p-3"
-              />
-              {errors.whatsapp && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.whatsapp.message}
-                </p>
-              )}
-            </div>
+    <div className="w-full min-h-[80vh] ">
+      <Link to="/">
+        <p className=" text-5xl mb-6 font-bold text-gray-800 pt-10">Wazo.</p>
+      </Link>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-full max-w-md p-6">
+          <p className="text-center text-gray-600 mb-4">
+            Connectez-vous pour gérer vos produits, vos commandes et suivre vos
+            ventes.
+          </p>
+          <div className="border border-gray-100 rounded-lg p-6 shadow-2xl">
+            <form onSubmit={handleSubmit(formSubmit)}>
+              <p className="text-center text-gray-700 mb-8 text-lg">
+                Se connecter à ma boutique Wazo
+              </p>
+              <div className="mb-8">
+                <input
+                  {...register("whatsapp")}
+                  type="text"
+                  placeholder="Votre numéro (ex: 0707070707)"
+                  className="w-full border border-gray-300 rounded-lg p-3"
+                />
+                {errors.whatsapp && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.whatsapp.message}
+                  </p>
+                )}
+              </div>
 
-            <div className="mb-10">
-              {/* <label className="block mb-2">Mot De Passe</label> */}
-              <input
-                {...register("motdepasse")}
-                type="password"
-                placeholder="mot de passe"
-                className="w-full border border-gray-300 rounded-lg p-3"
-              />
-              {errors.motdepasse && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.motdepasse.message}
-                </p>
-              )}
-            </div>
-            <button
-              className="w-full bg-black text-white p-3 rounded-lg mt-2 hover:bg-gray-800 transition-colors"
-              type="submit"
-            >
-              Connexion
-            </button>
-          </form>
+              <div className="mb-8">
+                <input
+                  {...register("motdepasse")}
+                  type="password"
+                  placeholder="Mot de passe"
+                  className="w-full border border-gray-300 rounded-lg p-3"
+                />
+                {errors.motdepasse && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.motdepasse.message}
+                  </p>
+                )}
+              </div>
+              <button
+                className="w-full bg-black text-white p-3 rounded-lg mt-2 hover:bg-gray-800 transition-colors"
+                type="submit"
+              >
+                Connexion
+              </button>
+            </form>
+            <p className="text-center text-gray-500 text-sm mt-6">
+              Vous n'avez pas encore de boutique ?{" "}
+              <span
+                onClick={() => navigate("/creerboutique")}
+                className="text-blue-600 hover:underline cursor-pointer"
+              >
+                Créez-en une ici
+              </span>
+              .
+            </p>
+          </div>
         </div>
       </div>
+      );
     </div>
   );
 };

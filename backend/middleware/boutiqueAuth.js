@@ -4,7 +4,7 @@ const tableauAuth = async (req, res, next) => {
   try {
     const { token } = req.headers;
     if (!token) {
-      res
+      return res
         .status(401)
         .json({ succcess: false, message: "Non-autorisé, pas de compte" });
     }
@@ -13,13 +13,13 @@ const tableauAuth = async (req, res, next) => {
       token_decode !==
       process.env.ADMIN_NUMERO + process.env.ADMIN_MOTDEPASSE
     ) {
-      res
+      return res
         .status(401)
         .json({ succcess: false, message: "Non-autorisé, pas de compte" });
     }
-    next();
+    // next();
   } catch (error) {
-    res.status(401).json({ success: false, message: "pas de compte" });
+    return res.status(401).json({ success: false, message: "pas de compte" });
   }
 };
 

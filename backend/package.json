@@ -21,6 +21,7 @@
     "jsonwebtoken": "^9.0.2",
     "moongose": "^1.0.0",
     "multer": "^2.0.1",
+    "streamifier": "^0.1.1",
     "validator": "^13.15.15"
   },
   "devDependencies": {

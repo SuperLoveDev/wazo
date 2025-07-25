@@ -80,6 +80,35 @@ const getAllBoutiques = async (req, res) => {
   }
 };
 
+// get single boutique with populated products
+const getBoutiqueById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const boutique = await Boutique.findById(id).populate("products");
+
+    console.log("ID reçu dans getBoutiqueById:", id);
+
+    if (!boutique) {
+      return res.status(404).json({
+        success: false,
+        message: "Boutique non trouvée",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      boutique,
+    });
+  } catch (error) {
+    console.error("Erreur getBoutiqueById:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 // boutiquelogin
 const loginBoutique = async (req, res) => {
   try {
@@ -160,4 +189,10 @@ const boutiqueTableau = async (req, res) => {
   }
 };
 
-export { boutiqueUser, getAllBoutiques, loginBoutique, boutiqueTableau };
+export {
+  boutiqueUser,
+  getAllBoutiques,
+  getBoutiqueById,
+  loginBoutique,
+  boutiqueTableau,
+};

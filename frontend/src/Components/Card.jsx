@@ -7,8 +7,8 @@ const Card = ({ id, image, name, rating, article, adresse, whatsapp }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col w-full h-auto max-w-xs bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer">
-      {/* IMAGE avec RATION FIX */}
+    <div className=" flex flex-col w-full h-auto max-w-xs bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer">
+      {/* IMAGE WITH RATION FIX */}
       <div className="aspect-video overflow-hidden">
         <img
           src={image}

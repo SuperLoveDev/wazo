@@ -7,14 +7,10 @@ const Gallery = ({ setClickMedia, boutique }) => {
     <div className="rounded-xl shadow-xl bg-gray-50 p-4 lg:w-1/3">
       <Title text1={"GALLERY"} />
       <div className="grid grid-cols-2 gap-3 mt-2">
-        {boutique.products.map((product) => {
-          // const productImage = Array.isArray(product.image)
-          //   ? product.image[0]
-          //   : product.image;
-
+        {boutique.products.map((product, index) => {
           return (
             <div
-              key={product.id}
+              key={product._id || `${product.name}-${index}`}
               className="border border-gray-300 rounded-2xl overflow-hidden cursor-pointer"
             >
               {product.video ? (

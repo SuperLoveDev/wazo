@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { ShopContext } from "../Context/ShopContext";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const { setShowInput } = useContext(ShopContext);
 
   const navMenu = [
@@ -11,7 +12,7 @@ const Navbar = () => {
     { name: "Client", path: "/client" },
     { name: "Catalogue", path: "/catalogue" },
     { name: "Vendeur", path: "/creerboutique" },
-    { name: "Mon Tableau", path: "/tableau" },
+    { name: "A propos", path: "/apropos" },
   ];
 
   const [visible, setVisible] = useState(false);
@@ -53,9 +54,16 @@ const Navbar = () => {
           />
           <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4 pb-3 ">
             <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded">
-              <p className="cursor-pointer hover:text-gray-900">My Profile</p>
-              <p className="cursor-pointer hover:text-gray-900">Orders</p>
-              <p className="cursor-pointer hover:text-gray-900">Logout</p>
+              <p
+                onClick={() => navigate("/loginboutique")}
+                className="cursor-pointer hover:text-gray-900"
+              >
+                Profile
+              </p>
+              <p className="cursor-pointer hover:text-gray-900">
+                Mes commandes
+              </p>
+              {/* <p className="cursor-pointer hover:text-gray-900">Logout</p> */}
             </div>
           </div>
         </div>

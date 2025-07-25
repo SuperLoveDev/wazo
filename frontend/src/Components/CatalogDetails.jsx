@@ -13,7 +13,7 @@ const CatalogDetails = () => {
   const { id } = useParams();
   const { boutiques } = useContext(ShopContext);
 
-  const boutique = boutiques.find((b) => b.id === id);
+  const boutique = boutiques.find((b) => b._id === id);
 
   const [clickMedia, setClickMedia] = useState({
     type: "image",
@@ -29,7 +29,7 @@ const CatalogDetails = () => {
   }
 
   return (
-    <div className="max-w-[1400px] mx-auto p-4">
+    <div className="w-full p-4">
       <div className="flex flex-col lg:flex-row gap-4">
         {/* IMAGE / VIDEO PRINCIPALE */}
         <div className="flex flex-col gap-4 rounded-xl shadow-xl bg-gray-100 p-4 lg:w-2/3">
@@ -53,7 +53,7 @@ const CatalogDetails = () => {
               {boutique.name}
               <div className="flex items-center">
                 <Star size={20} className="text-black-500 fill-black-500" />
-                <span>{boutique.rating.stars} / 5</span>
+                {/* <span>{boutique.rating.stars} / 5</span> */}
               </div>
             </h1>
             <p className="text-sm text-gray-600 text-bold line-clamp-2 border border-gray-300 bg-white rounded-2xl p-2">
@@ -62,16 +62,14 @@ const CatalogDetails = () => {
             <p className="text-md">📍 Adresse: {boutique.adresse}</p>
           </div>
 
-          <div className="flex flex-wrap gap-3 sm:gap-4">
+          <div className="flex justify-between flex-wrap gap-3 sm:gap-4">
             <button
               onClick={() => navigate(-1)}
               className="border border-gray-200 rounded-2xl p-2 text-gray-600 text-sm sm:text-base bg-white transition cursor-pointer"
             >
               ← Retour aux boutiques
             </button>
-            <button className="border border-gray-200 rounded-2xl p-2 text-gray-600 text-sm sm:text-base bg-white font-bold transition cursor-pointer">
-              Ajouter au panier +
-            </button>
+
             <a
               href={`https://wa.me/${boutique.whatsapp}`}
               target="_blank"
