@@ -1,19 +1,7 @@
-import React, { useState } from "react";
-import List from "./List";
+import React from "react";
 
 const ProductPage = () => {
-  const [refreshList, setRefreshList] = useState(false);
-
-  const handleProductAdded = () => {
-    setRefreshList((prev) => !prev);
-  };
-
-  return (
-    <div>
-      <Add onAdded={handleProductAdded} />
-      <List refreshTrigger={refreshList} />
-    </div>
-  );
+  return <div>ProductPage</div>;
 };
 
 export default ProductPage;

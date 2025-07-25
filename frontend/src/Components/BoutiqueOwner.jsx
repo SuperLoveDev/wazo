@@ -102,8 +102,8 @@ const BoutiqueOwner = () => {
             {/* GALLERY */}
             {boutique.products?.length > 0 && (
               <Gallery
-                clickMedia={clickMedia}
-                setClickMedia={setClickMedia}
+                // clickMedia={clickMedia}
+                // setClickMedia={setClickMedia}
                 boutique={boutique}
               />
             )}

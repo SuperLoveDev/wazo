@@ -1,40 +1,25 @@
 import React from "react";
+import { ShopContext } from "../Context/ShopContext";
 
-const GalleryCard = ({ product, setClickMedia, boutique }) => {
+const GalleryCard = ({ product }) => {
   return (
-    <>
-      <img
-        onClick={() => setClickMedia({ type: "image", src: product.image })}
-        src={product.image}
-        className="w-full aspect-square object-cover"
-        alt={product.name}
-      />
-      <div className="p-2 flex flex-col gap-1">
-        <h3 className="font-medium text-xs line-clamp-2">{product.article}</h3>
-        {product.price != null && (
-          <p className="text-gray-600 font-bold text-sm">
-            {product.price.toLocaleString()} FCFA
-          </p>
-        )}
-        <div className="flex justify-between gap-1 items-center mt-1">
-          <p className="border border-gray-300 text-xs rounded-full cursor-pointer p-1">
-            commander
-          </p>
-          <a
-            href={`https://wa.me/${
-              boutique.whatsapp
-            }?text=Bonjour, je suis intéressé par ${product.article}${
-              product.price ? ` à ${product.price.toLocaleString()} FCFA` : ""
-            }.`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-green-900 text-white text-xs rounded-full p-1"
-          >
-            WhatsApp
-          </a>
+    <div className="border rounded-xl overflow-hidden hover:shadow-md">
+      {product.image ? (
+        <img
+          src={product.image}
+          alt={product.article}
+          className="w-full aspect-square object-cover"
+        />
+      ) : (
+        <div className="w-full aspect-square bg-gray-100 flex items-center justify-center">
+          <span className="text-gray-400">Pas d'image</span>
         </div>
+      )}
+      <div className="p-2">
+        <h3 className="font-medium text-sm truncate">{product.article}</h3>
+        <p className="text-xs text-gray-500">{product.price} FCFA</p>
       </div>
-    </>
+    </div>
   );
 };
 
