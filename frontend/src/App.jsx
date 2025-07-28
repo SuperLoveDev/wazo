@@ -18,6 +18,7 @@ import Setting from "./Pages/Dashboard/Setting";
 import Client from "./Pages/Client";
 import LoginBoutique from "./Pages/LoginBoutique";
 import BoutiqueOwner from "./Components/BoutiqueOwner";
+import OrderConfirmation from "./Pages/OrderConfirmation";
 
 function App() {
   const location = useLocation();
@@ -46,6 +47,7 @@ function App() {
           </Route>
 
           <Route path="/cart" element={<Cart />} />
+          <Route path="/commande" element={<OrderConfirmation />} />
         </Routes>
         <Footer />
         <ToastContainer

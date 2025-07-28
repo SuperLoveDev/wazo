@@ -23,6 +23,7 @@ import bad from "./bad-logo.png";
 import hitrust from "./hitrust.png";
 import iso from "./iso.png";
 import captera from "./captera.png";
+import cinetpay from "./cinetpay.png";
 
 export const assets = {
   cart_icon,
@@ -53,4 +54,5 @@ export const confiances = {
   hitrust,
   iso,
   captera,
+  cinetpay,
 };
