@@ -72,7 +72,7 @@ const boutiqueUser = async (req, res) => {
 // get all boutique catalogue for catalog page
 const getAllBoutiques = async (req, res) => {
   try {
-    const boutiques = await Boutique.find();
+    const boutiques = await Boutique.find().populate("products");
     res.status(200).json({ success: true, boutiques });
   } catch (error) {
     console.error(error);

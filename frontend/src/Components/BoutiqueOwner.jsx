@@ -105,6 +105,7 @@ const BoutiqueOwner = () => {
                 // clickMedia={clickMedia}
                 // setClickMedia={setClickMedia}
                 boutique={boutique}
+                products={boutique.products}
               />
             )}
           </div>

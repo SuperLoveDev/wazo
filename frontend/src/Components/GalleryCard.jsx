@@ -1,14 +1,15 @@
 import React from "react";
 import { ShopContext } from "../Context/ShopContext";
+import { MessageCircle } from "lucide-react";
 
 const GalleryCard = ({ product }) => {
   return (
-    <div className="border rounded-xl overflow-hidden hover:shadow-md">
+    <div className="border border-gray-300 rounded-xl overflow-hidden hover:shadow-md">
       {product.image ? (
         <img
           src={product.image}
           alt={product.article}
-          className="w-full aspect-square object-cover"
+          className="w-full object-cover"
         />
       ) : (
         <div className="w-full aspect-square bg-gray-100 flex items-center justify-center">
@@ -16,8 +17,30 @@ const GalleryCard = ({ product }) => {
         </div>
       )}
       <div className="p-2">
-        <h3 className="font-medium text-sm truncate">{product.article}</h3>
-        <p className="text-xs text-gray-500">{product.price} FCFA</p>
+        <h3 className="text-xl font-semibold text-gray-800 truncate">
+          Article: {product.article}
+        </h3>
+        <p className="text-xm text-black border border-gray-200 bg-gray-100 rounded-2xl p-1">
+          Desc: {product.description}
+        </p>
+        <p className="text-xm font-bold text-black mb-1 mt-1">
+          Prix: {product.price} FCFA
+        </p>
+      </div>
+
+      <div className="text-center flex flex-col justify-center items-center gap-1 mb-5">
+        <button className="bg-black hover:bg-black/80 w-[150px] text-white px-3 py-1.5 rounded-lg text-sm font-medium flex items-center justify-center transition-colors cursor-pointer">
+          Ajouet au panier
+        </button>
+        <a
+          href={`https://wa.me/${product.whatsapp}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-green-800 hover:bg-green-700 w-[150px] text-white px-3 py-1.5 rounded-lg text-sm font-medium flex items-center justify-center gap-1 transition-colors"
+        >
+          <MessageCircle size={16} />
+          WhatsApp
+        </a>
       </div>
     </div>
   );

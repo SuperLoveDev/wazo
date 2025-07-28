@@ -87,7 +87,7 @@ const FormBoutique = () => {
         onSubmit={handleSubmit(formSubmit)}
         className="max-w-lg mx-auto lg:mx-0 p-4 bg-white shadow rounded-2xl flex flex-col gap-8"
       >
-        <h2 className="text-xl text-center font-bold">Infos de la boutique</h2>
+        <h2 className="text-xl text-center font-bold">Creation boutique</h2>
 
         <div>
           <input
@@ -200,7 +200,6 @@ const FormBoutique = () => {
           Creer ma boutique →
         </button>
       </form>
-
       <Link to="/loginboutique" className="px-4">
         <p className="text-2xl my-5">
           Avez-vous déjà un compte ?{" "}

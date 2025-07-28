@@ -25,37 +25,8 @@ const CatalogDetails = () => {
       {/* Conteneur principal pour la galerie */}
       <div className="w-full mb-8">
         <Title text1={"GALLERY"} />
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
-          {boutique.products?.map((product) => (
-            <div
-              key={product._id}
-              className="border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-all"
-            >
-              {product.image ? (
-                <img
-                  src={product.image}
-                  alt={product.article}
-                  className="w-full aspect-square object-cover"
-                />
-              ) : product.video ? (
-                <video
-                  src={product.video}
-                  className="w-full aspect-square object-cover"
-                  controls
-                />
-              ) : (
-                <div className="w-full aspect-square bg-gray-100 flex items-center justify-center">
-                  <span className="text-gray-400">Pas de média</span>
-                </div>
-              )}
-              <div className="p-2">
-                <h3 className="font-medium text-sm truncate">
-                  {product.article}
-                </h3>
-                <p className="text-xs text-gray-500">{product.price} FCFA</p>
-              </div>
-            </div>
-          ))}
+        <div className="pt-10">
+          <Gallery boutique={boutique} />
         </div>
       </div>
 
