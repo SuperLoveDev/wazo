@@ -2,9 +2,11 @@ import React, { useContext, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { ShopContext } from "../Context/ShopContext";
+import { CartContext } from "../Context/CartContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { cartItems } = useContext(CartContext);
   const { setShowInput } = useContext(ShopContext);
 
   const navMenu = [
@@ -75,7 +77,7 @@ const Navbar = () => {
             alt=""
           />
           <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white rounded-full aspect-square text-[8px]">
-            10
+            {cartItems.length}
           </p>
         </Link>
 

@@ -7,6 +7,7 @@ import boutiqueRouter from "./routes/boutiqueRoute.js";
 import userRouter from "./routes/userRoute.js";
 import productRouter from "./routes/productRoute.js";
 import { getAllBoutiques } from "./controllers/boutiqueController.js";
+import cartRouter from "./routes/cartRoute.js";
 
 // APP CONFIGURATION
 const app = express();
@@ -28,6 +29,7 @@ connectCloudinary();
 app.use("/api/user", userRouter);
 app.use("/api/creerboutique", boutiqueRouter);
 app.use("/api/product", productRouter);
+app.use("/api/cart", cartRouter);
 
 app.get("/", (req, res) => {
   res.send("My app is fully working, Yeah !");

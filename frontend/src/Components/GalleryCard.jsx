@@ -1,8 +1,21 @@
-import React from "react";
-import { ShopContext } from "../Context/ShopContext";
+import React, { useContext } from "react";
 import { MessageCircle } from "lucide-react";
+import { CartContext } from "../Context/CartContext";
 
 const GalleryCard = ({ product }) => {
+  const { addToCart } = useContext(CartContext);
+
+  const handleAddToCart = () => {
+    const productToAdd = {
+      productId: product._id,
+      article: product.article,
+      prix: product.price,
+      image: product.image,
+      quantity: 1,
+    };
+    addToCart(productToAdd);
+  };
+
   return (
     <div className="border border-gray-300 rounded-xl overflow-hidden hover:shadow-md">
       {product.image ? (
@@ -29,7 +42,10 @@ const GalleryCard = ({ product }) => {
       </div>
 
       <div className="text-center flex flex-col justify-center items-center gap-1 mb-5">
-        <button className="bg-black hover:bg-black/80 w-[150px] text-white px-3 py-1.5 rounded-lg text-sm font-medium flex items-center justify-center transition-colors cursor-pointer">
+        <button
+          onClick={handleAddToCart}
+          className="bg-black hover:bg-black/80 w-[150px] text-white px-3 py-1.5 rounded-lg text-sm font-medium flex items-center justify-center transition-colors cursor-pointer"
+        >
           Ajouet au panier
         </button>
         <a
