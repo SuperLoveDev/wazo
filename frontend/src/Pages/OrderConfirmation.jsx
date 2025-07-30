@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -8,6 +8,8 @@ import { confiances } from "../assets/assets";
 import { CreditCard } from "lucide-react";
 import FormInput from "../Components/FormInput";
 import PaymentOption from "../Components/PaymentOption";
+import axios from "axios";
+import { CartContext } from "../Context/CartContext";
 
 // form schema
 const schema = yup.object({
@@ -23,16 +25,44 @@ const schema = yup.object({
 
 const OrderConfirmation = () => {
   const [payment, setPayment] = useState("pal");
+  const { cartItems } = useContext(CartContext);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
-  const formSubmit = (data) => {
-    console.log(data);
-    console.log(payment);
-    // Redirection ou envoi au serveur
+  const formSubmit = async (data) => {
+    console.log("Données client :", data);
+    console.log("Méthode de paiement :", payment);
+
+    if (payment === "cinetpay") {
+      try {
+        const subtotal = cartItems.reduce(
+          (total, item) => total + item.prix * item.quantity,
+          0
+        );
+        const livraison = 1500;
+        const montant = subtotal + livraison;
+
+        const res = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/api/payment/cinetpay`,
+          {
+            ...data,
+            montant,
+            cartId: localStorage.getItem("cartId"),
+          }
+        );
+
+        window.location.href = res.data.payment_url;
+      } catch (err) {
+        alert("Erreur lors de la redirection vers le paiement");
+        console.error(err);
+      }
+    } else {
+      console.log("Paiement non CinetPay à gérer.");
+    }
   };
 
   return (
@@ -42,7 +72,6 @@ const OrderConfirmation = () => {
     >
       <div className="flex flex-col gap-4 w-full sm:max-w-[480px]">
         <Title text1={"information livraison"} />
-
         <div className="flex gap-3">
           <FormInput
             name="nom"
@@ -83,7 +112,7 @@ const OrderConfirmation = () => {
         />
         <FormInput
           name="ville"
-          placeholder="Ville"
+          placeholder="Ville*"
           register={register}
           error={errors.ville}
         />
@@ -113,7 +142,12 @@ const OrderConfirmation = () => {
             onChange={setPayment}
             label="Paiement via carte ou mobile money"
             icon={
-              <img className="w-25" src={confiances.cinetpay} alt="cinetpay" />
+              <img
+                className="w-25"
+                src={confiances.cinetpay}
+                alt="cinetpay"
+                loading="lazy"
+              />
             }
           />
           <PaymentOption
@@ -127,13 +161,12 @@ const OrderConfirmation = () => {
               </div>
             }
           />
-
           <div className="flex items-center justify-center mt-4">
             <button
               type="submit"
               className="w-[230px] border bg-black text-white p-4 rounded cursor-pointer mb-4 hover:bg-gray-800 transition-colors"
             >
-              Je finalise
+              Confirmation paiement
             </button>
           </div>
         </div>
