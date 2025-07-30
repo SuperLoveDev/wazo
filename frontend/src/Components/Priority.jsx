@@ -53,7 +53,7 @@ const Priority = () => {
 
       <div className="max-w-7xl mx-auto flex flex-col justify-center items-center gap-6 mb-19">
         <h1 className="text-white sm:text-xl md:text-base lg:text-6xl text-4xl">
-          qu'Attendez-Vous ?
+          Qu'Attendez-Vous ?
         </h1>
         <p className="text-white text-xl">
           Crée et développe ton activité des aujourdhui.

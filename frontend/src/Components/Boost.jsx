@@ -68,9 +68,9 @@ const Boost = () => {
       <div
         onClick={() => {
           window.scrollTo(0, 0);
-          navigate("/createboutique");
+          navigate("/creerboutique");
         }}
-        className="border cursor-pointer bg-purple-400 w-55 h-[60px] flex justify-center items-center my-10 mx-auto text-white rounded-full hover:bg-black transition-transform duration-300"
+        className="border cursor-pointer bg-black w-55 h-[60px] flex justify-center items-center my-10 mx-auto text-white rounded-full hover:bg-black/80 transition-transform duration-300"
       >
         <button className="font-sans text-center text-base cursor-pointer">
           Créer-Boutique

@@ -26,19 +26,19 @@ const Hero = () => {
           </p>
 
           {/* HERO BUTTON */}
-          <Link to="/createboutique">
+          <Link to="/creerboutique">
             <button className="border my-2 font-bold cursor-pointer w-35 h-[50px] bg-black text-white hover:bg-black/80 hover:text-white border-none rounded-full">
               Lancez-vous
             </button>
           </Link>
 
           {/* HERO IMAGE */}
-          <div className="relative w-full h-full mt-10  ">
+          <div className="w-screen h-screen my-5">
             <img
-              className="rounded-xl w-full h-full object-cover"
               src={assets.heroImage}
-              loading="lazy"
               alt="hero-image"
+              loading="lazy"
+              className="w-full h-full object-cover"
             />
           </div>
         </div>
@@ -50,7 +50,7 @@ const Hero = () => {
               return (
                 <img
                   key={index}
-                  className={`rounded-full h-22 w-22 object-cover border-2 border-white mb-10 ${
+                  className={`rounded-full h-22 w-22 object-cover border-2 border-white mb-5 mt-10 ${
                     index !== 0 ? "-ml-3" : ""
                   }`}
                   src={image.src}
@@ -60,8 +60,12 @@ const Hero = () => {
             })}
           </div>
           <h1 className="text-center text-xl text-white mb-10">
-            Trusted by over 754,000 users all over the world. <br />
-            <span>Start your adventure now, Start earnig with Wazo</span>
+            Plus de 754 000 utilisateurs nous font déjà confiance dans le monde
+            entier. <br />
+            <span>
+              Commence ton aventure dès maintenant et gagne de l'argent avec
+              Wazo.
+            </span>
           </h1>
 
           <div className="flex flex-col items-center justify-center my-5">
