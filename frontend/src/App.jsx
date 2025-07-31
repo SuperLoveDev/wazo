@@ -19,6 +19,7 @@ import Client from "./Pages/Client";
 import LoginBoutique from "./Pages/LoginBoutique";
 import BoutiqueOwner from "./Components/BoutiqueOwner";
 import OrderConfirmation from "./Pages/OrderConfirmation";
+import About from "./Pages/About";
 
 function App() {
   const location = useLocation();
@@ -45,7 +46,7 @@ function App() {
             <Route path="stats" element={<Statistic />} />
             <Route path="setting" element={<Setting />} />
           </Route>
-
+          <Route path="/apropos" element={<About />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/commande" element={<OrderConfirmation />} />
         </Routes>
