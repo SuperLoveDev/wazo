@@ -12,6 +12,7 @@ const BoutiqueCard = ({ boutiqueId }) => {
     "FASION",
     "BEAUTÉ",
     "COUTURE",
+    "COSMETIQUE",
     "PAGNES",
     "AUDIO-VISUEL",
     "RESTAURANT",
@@ -19,6 +20,7 @@ const BoutiqueCard = ({ boutiqueId }) => {
     "EDUCATION",
     "LOCATION",
     "FITNESS",
+    "PARFUMERIE",
   ];
 
   const [showFilter, setShowFilter] = useState(false);

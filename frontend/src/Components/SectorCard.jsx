@@ -4,7 +4,7 @@ import Title from "./Title";
 import { motion } from "framer-motion";
 import { confiances } from "../assets/assets";
 import { ArrowRight } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // sector data for mapping sector-card
 const sectorsData = [
