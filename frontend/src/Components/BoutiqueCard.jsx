@@ -9,8 +9,8 @@ const BoutiqueCard = ({ boutiqueId }) => {
 
   const filterList = [
     "TOUS",
-    "FASION",
-    "BEAUTÉ",
+    "MODE",
+    "BEAUTE",
     "COUTURE",
     "COSMETIQUE",
     "PAGNES",
@@ -29,7 +29,9 @@ const BoutiqueCard = ({ boutiqueId }) => {
   const filteredBoutique = useMemo(() => {
     return selectedFiltered === "TOUS"
       ? boutiques
-      : boutiques.filter((b) => b.category === selectedFiltered);
+      : boutiques.filter(
+          (b) => b.category.toLowerCase() === selectedFiltered.toLowerCase()
+        );
   }, [boutiques, selectedFiltered]);
 
   const searchingBoutique = useMemo(() => {

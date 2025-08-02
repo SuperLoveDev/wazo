@@ -120,17 +120,18 @@ const FormBoutique = () => {
             {...register("Category")}
             className="border p-2 rounded-xl w-full"
           >
-            <option value="">Sélectionner une catégorie</option>
-            <option value="Fashion">Mode</option>
-            <option value="Beauté">Beauté</option>
-            <option value="Alimentation">Alimentation</option>
-            <option value="Décoration">Décoration</option>
-            <option value="Electronique">Electronique</option>
-            <option value="Services">Services</option>
-            <option value="Fitness">Fitness</option>
-            <option value="Restauration">Restauration</option>
-            <option value="Cosmetique">Cosmetique</option>
-            <option value="Couture">Couture</option>
+            <option value="MODE">Mode</option>
+            <option value="BEAUTÉ">Beauté</option>
+            <option value="COUTURE">Couture</option>
+            <option value="COSMETIQUE">Cosmétique</option>
+            <option value="PAGNES">Pagnes</option>
+            <option value="AUDIO-VISUEL">Audio-visuel</option>
+            <option value="RESTAURANT">Restauration</option>
+            <option value="SERVICE">Services</option>
+            <option value="EDUCATION">Éducation</option>
+            <option value="LOCATION">Location</option>
+            <option value="FITNESS">Fitness</option>
+            <option value="PARFUMERIE">Parfumerie</option>
           </select>
           {errors.Category && (
             <p className="text-red-500 text-sm">{errors.Category.message}</p>
