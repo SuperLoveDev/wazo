@@ -62,7 +62,6 @@ function App() {
             />
 
             <Route path="stats" element={<Statistic />} />
-            <Route path="setting" element={<Setting />} />
           </Route>
           <Route path="/apropos" element={<About />} />
           <Route path="/cart" element={<Cart />} />
