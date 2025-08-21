@@ -9,6 +9,9 @@ import productRouter from "./routes/productRoute.js";
 import { getAllBoutiques } from "./controllers/boutiqueController.js";
 import cartRouter from "./routes/cartRoute.js";
 import paymentRouter from "./routes/paymentRoute.js";
+import orderRouter from "./routes/orderRoute.js";
+import router from "./routes/orderRoute.js";
+import statisticsRouter from "./routes/statisticsRoute.js";
 
 // APP CONFIGURATION
 const app = express();
@@ -32,6 +35,8 @@ app.use("/api/creerboutique", boutiqueRouter);
 app.use("/api/product", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/payment", paymentRouter);
+app.use("/api/order", orderRouter);
+app.use("/api/statistics", statisticsRouter);
 
 app.get("/", (req, res) => {
   res.send("My app is fully working, Yeah !");

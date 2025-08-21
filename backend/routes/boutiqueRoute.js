@@ -12,7 +12,7 @@ const boutiqueRouter = express.Router();
 
 boutiqueRouter.post("/create", upload.single("image"), boutiqueUser);
 boutiqueRouter.get("/boutique", getAllBoutiques);
-boutiqueRouter.get("/boutiques/:id", getBoutiqueById);
+boutiqueRouter.get("/boutique/:id", getBoutiqueById);
 boutiqueRouter.post("/loginboutique", loginBoutique);
 boutiqueRouter.post("/tableau", boutiqueTableau);
 

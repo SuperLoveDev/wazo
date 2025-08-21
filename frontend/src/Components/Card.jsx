@@ -36,7 +36,7 @@ const Card = ({ id, image, name, rating, article, adresse, whatsapp }) => {
           <span className="font-medium">Adresse:</span> {adresse}
         </p>
 
-        <div className="flex justify-between items-center pt-2">
+        <div className="flex flex-col  gap-2 sm:flex-row justify-between items-center pt-2">
           <button
             onClick={() => {
               window.scrollTo(0, 0);

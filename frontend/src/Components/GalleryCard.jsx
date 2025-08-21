@@ -1,61 +1,59 @@
 import React, { useContext } from "react";
 import { MessageCircle } from "lucide-react";
 import { CartContext } from "../Context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 const GalleryCard = ({ product }) => {
+  const navigate = useNavigate();
   const { addToCart } = useContext(CartContext);
 
   const handleAddToCart = () => {
-    const productToAdd = {
+    addToCart({
       productId: product._id,
       article: product.article,
       prix: product.price,
       image: product.image,
       quantity: 1,
-    };
-    addToCart(productToAdd);
+      boutiqueId: product.boutique,
+      boutiqueName: product.boutiqueName || "Nom boutique inconnu",
+    });
   };
 
   return (
-    <div className="border border-gray-300 rounded-xl overflow-hidden hover:shadow-md">
-      {product.image ? (
+    <div className="border border-gray-200 rounded-xl overflow-hidden hover:shadow-md">
+      <div className="" onClick={() => navigate(`/product/${product._id}`)}>
         <img
-          src={product.image}
+          src={product.image || "placeholder.jpg"}
           alt={product.article}
-          className="w-full object-cover"
+          loading="lazy"
+          className="w-full object-cover aspect-square cursor-pointer"
         />
-      ) : (
-        <div className="w-full aspect-square bg-gray-100 flex items-center justify-center">
-          <span className="text-gray-400">Pas d'image</span>
-        </div>
-      )}
-      <div className="p-2">
-        <h3 className="text-xl font-semibold text-gray-800 truncate">
-          Article: {product.article}
-        </h3>
-        <p className="text-xm text-black border border-gray-200 bg-gray-100 rounded-2xl p-1">
-          Desc: {product.description}
-        </p>
-        <p className="text-xm font-bold text-black mb-1 mt-1">
-          Prix: {product.price} FCFA
-        </p>
       </div>
 
-      <div className="text-center flex flex-col justify-center items-center gap-1 mb-5">
+      <div className="p-2 space-y-1">
+        <h3 className="text-sm font-semibold truncate">
+          Nom: {product.article}
+        </h3>
+        <p className="text-sm text-gray-600 border border-gray-100 bg-transparent p-1 rounded-lg">
+          Desc: {product.description}
+        </p>
+        <p className="font-bold text-sm ">Prix: {product.price} FCFA</p>
+      </div>
+
+      <div className="flex flex-col items-center gap-2 p-2">
         <button
           onClick={handleAddToCart}
-          className="bg-black hover:bg-black/80 w-[150px] text-white px-3 py-1.5 rounded-lg text-sm font-medium flex items-center justify-center transition-colors cursor-pointer"
+          className="bg-white border border-gray-200 hover:bg-black hover:text-white w-full text-black py-1.5 rounded-lg text-sm cursor-pointer transition-all"
         >
-          Ajouet au panier
+          Ajouter au panier
         </button>
         <a
           href={`https://wa.me/${product.whatsapp}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-green-800 hover:bg-green-700 w-[150px] text-white px-3 py-1.5 rounded-lg text-sm font-medium flex items-center justify-center gap-1 transition-colors"
+          className="bg-green-700 hover:bg-green-600 w-full text-white py-1.5 rounded-lg text-sm flex items-center justify-center gap-1"
         >
-          <MessageCircle size={16} />
-          WhatsApp
+          <MessageCircle size={16} /> WhatsApp
         </a>
       </div>
     </div>

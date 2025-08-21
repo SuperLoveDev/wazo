@@ -7,6 +7,7 @@ import { CartContext } from "../Context/CartContext";
 
 const Cart = () => {
   const navigate = useNavigate();
+
   const { cartItems, deletCart, updateCart } = useContext(CartContext);
 
   const handleQuantityChange = (productId, newQuantity) => {

@@ -23,31 +23,21 @@ const CartProvider = ({ children }) => {
 
   const addToCart = async (product) => {
     try {
-      const res = await axios.post(`${backendUrl}/api/cart/${cartId}`, {
-        product: {
-          ...product,
-          quantity: product.quantity || 1,
-        },
-      });
-
-      // Mise à jour optimiste du state
-      setCartItems((prevItems) => {
-        const existingItem = prevItems.find(
-          (item) => item.productId === product.productId
+      if (!product.productId || !product.boutiqueId || !product.boutiqueName) {
+        console.error(
+          "Chaque produit doit avoir productId, boutiqueId et boutiqueName !"
         );
-        if (existingItem) {
-          return prevItems.map((item) =>
-            item.productId === product.productId
-              ? { ...item, quantity: item.quantity + (product.quantity || 1) }
-              : item
-          );
-        }
-        return [...prevItems, { ...product, quantity: product.quantity || 1 }];
-      });
+        return;
+      }
 
-      return res.data.items;
+      setCartItems((prev) => [...prev, product]);
+
+      // Envoyer la mise à jour au backend
+      await axios.post(`${backendUrl}/api/cart/${cartId}`, {
+        product,
+      });
     } catch (err) {
-      console.error("Erreur lors de l'ajout au panier", err);
+      console.error("Erreur ajout au panier", err);
     }
   };
 
@@ -68,6 +58,16 @@ const CartProvider = ({ children }) => {
     });
   };
 
+  const clearCart = async () => {
+    setCartItems([]);
+    if (cartId) {
+      await axios.delete(`${backendUrl}/api/cart/${cartId}/all`);
+    }
+    const newCartId = crypto.randomUUID();
+    setCartId(newCartId);
+    localStorage.setItem("cartId", newCartId);
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -76,6 +76,7 @@ const CartProvider = ({ children }) => {
         addToCart,
         deletCart,
         updateCart,
+        clearCart,
       }}
     >
       {children}

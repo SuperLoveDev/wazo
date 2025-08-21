@@ -20,12 +20,20 @@ import LoginBoutique from "./Pages/LoginBoutique";
 import BoutiqueOwner from "./Components/BoutiqueOwner";
 import OrderConfirmation from "./Pages/OrderConfirmation";
 import About from "./Pages/About";
+import FinalOrder from "./Pages/FinalOrder";
+import DeliveryPayment from "./Pages/DeliveryPayment";
+import CashConfirmation from "./Pages/CashConfirmation";
+import ProductPage from "./Pages/ProductPage";
+import { useContext } from "react";
+import { ShopContext } from "./Context/ShopContext";
 
 function App() {
   const location = useLocation();
   const hideNavbarRoutes = ["/creerboutique", "/loginboutique"];
 
   const hideNavbar = hideNavbarRoutes.includes(location.pathname);
+
+  const { selectedBoutique } = useContext(ShopContext);
 
   return (
     <>
@@ -42,13 +50,27 @@ function App() {
           <Route path="/tableau" element={<Tableau />}>
             <Route path="list" element={<List />} />
             <Route path="add" element={<Add />} />
-            <Route path="order" element={<Order />} />
+            <Route
+              path="order"
+              element={
+                selectedBoutique ? (
+                  <Order boutiqueId={selectedBoutique._id} />
+                ) : (
+                  <p>Chargement...</p>
+                )
+              }
+            />
+
             <Route path="stats" element={<Statistic />} />
             <Route path="setting" element={<Setting />} />
           </Route>
           <Route path="/apropos" element={<About />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/commande" element={<OrderConfirmation />} />
+          <Route path="/commandefinale" element={<FinalOrder />} />
+          <Route path="/delivery-payment" element={<DeliveryPayment />} />
+          <Route path="/order-confirmation" element={<CashConfirmation />} />
+          <Route path="/product/:id" element={<ProductPage />} />
         </Routes>
         <Footer />
         <ToastContainer

@@ -1,5 +1,6 @@
 import express from "express";
-import axios from "axios";
+import Order from "../models/orderModel.js";
+import Boutique from "../models/boutiqueModel.js";
 
 const paymentRouter = express.Router();
 
@@ -9,7 +10,6 @@ const SITE_ID = process.env.CINETPAY_SITE_ID;
 
 paymentRouter.post("/cinetpay", async (req, res) => {
   const { nom, prenom, numero, montant, cartId } = req.body;
-
   const transaction_id = `${cartId}-${Date.now()}`;
 
   try {
@@ -35,16 +35,31 @@ paymentRouter.post("/cinetpay", async (req, res) => {
   }
 });
 
+const router = express.Router();
+
 paymentRouter.post("/cinetpay/callback", async (req, res) => {
-  const { transaction_id, amount, payment_method, status } = req.body;
+  const { transaction_id, status } = req.body;
 
-  if (status === "ACCEPTED") {
-    console.log("PAIEMENT VALIDÉ:", { transaction_id, amount });
-  } else {
-    console.log("Paiement échoué:", { status, transaction_id });
+  try {
+    if (status === "ACCEPTED") {
+      const order = await Order.findOne({ paymentReference: transaction_id });
+
+      if (order) {
+        // Créditer chaque boutique
+        for (const boutique of order.boutiques) {
+          await Boutique.findByIdAndUpdate(boutique.boutiqueId, {
+            $inc: { solde: boutique.montant },
+          });
+        }
+        order.status = "paid";
+        await order.save();
+      }
+    }
+    res.status(200).end(); // Réponse obligatoire pour CinetPay
+  } catch (err) {
+    console.error("Erreur webhook:", err);
+    res.status(500).end();
   }
-
-  res.sendStatus(200);
 });
 
 export default paymentRouter;

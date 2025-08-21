@@ -3,6 +3,7 @@ import { assets } from "../assets/assets";
 import SectorCard from "./SectorCard";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import Ticker from "../Components/Ticker";
 
 const Hero = () => {
   const images = [
@@ -15,7 +16,7 @@ const Hero = () => {
     <>
       <div className="">
         <div className="flex flex-col items-center text-center tracking-tight my-10 font-sans mt-20">
-          <h1 className="font-bold text-6xl text-black mb-6">
+          <h1 className="font-bold text-4xl sm:text-7xl text-black mb-6">
             Le logiciel n°1 pour votre commerce, service et toute activité
           </h1>
 
@@ -33,7 +34,7 @@ const Hero = () => {
           </Link>
 
           {/* HERO IMAGE */}
-          <div className="w-screen h-screen my-5">
+          <div className="w-screen h-80 sm:h-80 md:h-screen my-5">
             <img
               src={assets.heroImage}
               alt="hero-image"
@@ -41,6 +42,10 @@ const Hero = () => {
               className="w-full h-full object-cover"
             />
           </div>
+        </div>
+
+        <div className="">
+          <Ticker />
         </div>
 
         {/* MAPPING IMAGES AND OVERLAPPING THEM  */}
@@ -69,7 +74,7 @@ const Hero = () => {
           </h1>
 
           <div className="flex flex-col items-center justify-center my-5">
-            <h1 className="font-bold text-center text-white text-5xl mb-6">
+            <h1 className="font-bold text-center text-white text-3xl sm:text-5xl mb-6">
               Une plateforme unique, des possibilités illimitées
             </h1>
 

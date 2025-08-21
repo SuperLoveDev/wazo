@@ -8,15 +8,20 @@ import { useNavigate } from "react-router-dom";
 
 // sector data for mapping sector-card
 const sectorsData = [
-  { name: "Fashion", image: sectorImages.fashion, slug: "fashion" },
-  { name: "Beauté", image: sectorImages.beaute, slug: "beaute" },
+  { name: "Mode", image: sectorImages.fashion, slug: "fashion" },
+  { name: "Cosmetique", image: sectorImages.beaute, slug: "cosmetique" },
   { name: "Couture", image: sectorImages.couture, slug: "couture" },
-  { name: "Audio-visuel", image: sectorImages.audio, slug: "audio-visuel" },
+  {
+    name: "Pret-a-porter",
+    image: sectorImages.pretporter,
+    slug: "pretporter",
+  },
   { name: "Restaurant", image: sectorImages.resto, slug: "resto" },
   { name: "Service", image: sectorImages.service, slug: "service" },
   { name: "Éducation", image: sectorImages.education, slug: "education" },
-  { name: "Location", image: sectorImages.location, slug: "location" },
-  { name: "Fitness", image: sectorImages.fitness, slug: "fitness" },
+  { name: "Pagne", image: sectorImages.pagne, slug: "pagne" },
+  { name: "Parfumerie", image: sectorImages.parfum, slug: "parfum" },
+  { name: "Bijouterie", image: sectorImages.bijou, slug: "bijou" },
 ];
 
 const confianceImg = [

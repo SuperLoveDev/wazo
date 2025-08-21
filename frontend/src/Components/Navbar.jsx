@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { ShopContext } from "../Context/ShopContext";
 import { CartContext } from "../Context/CartContext";
+import { ChevronLeft, MenuIcon } from "lucide-react";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -10,10 +11,10 @@ const Navbar = () => {
   const { setShowInput } = useContext(ShopContext);
 
   const navMenu = [
-    { name: "Home", path: "/" },
-    { name: "Client", path: "/client" },
+    { name: "Accueil", path: "/" },
+    // { name: "Client", path: "/client" },
     { name: "Catalogue", path: "/catalogue" },
-    { name: "Vendeur", path: "/creerboutique" },
+    { name: "Professionel", path: "/creerboutique" },
     { name: "A propos", path: "/apropos" },
   ];
 
@@ -81,7 +82,7 @@ const Navbar = () => {
           </p>
         </Link>
 
-        <img
+        <MenuIcon
           onClick={() => setVisible(true)}
           className="w-5 cursor-pointer sm:hidden"
           src={assets.menu_icon}
@@ -91,13 +92,13 @@ const Navbar = () => {
 
       {/* SIDEBAR FOR SMALLER SCREEN */}
       <div
-        className={`absolute top-0 right-0 bottom-0 overflow-hidden bg-amber-50 transition-all ${
-          visible ? "w-1/4" : "w-0"
+        className={`absolute top-0 right-0 bottom-0 overflow-hidden bg-white transition-all ${
+          visible ? "w-full" : "w-0"
         } `}
       >
         <div className="flex flex-col text-gray-900">
           <div className="flex items-center gap-4 p-3">
-            <img
+            <ChevronLeft
               onClick={() => setVisible(false)}
               className="h-4 rotate-180 cursor-pointer"
               src={assets.dropdown_icon}
@@ -116,7 +117,7 @@ const Navbar = () => {
                 onClick={() => setVisible(false)}
                 key={index}
                 to={link.path}
-                className="py-5 pl-6 cursor-pointer border-t hover:bg-amber-950 hover:text-white text-black"
+                className="py-5 pl-6 cursor-pointer border-t hover:bg-black hover:text-white text-black"
               >
                 <p>{link.name}</p>
               </NavLink>

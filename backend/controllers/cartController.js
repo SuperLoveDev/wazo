@@ -22,43 +22,28 @@ const addToCart = async (req, res) => {
   const { product } = req.body;
 
   try {
-    // Trouve le panier ou en crée un nouveau
     let cart = await Cart.findOne({ cartId });
 
     if (!cart) {
-      cart = new Cart({
-        cartId,
-        items: [
-          {
-            ...product,
-            quantity: product.quantity || 1,
-          },
-        ],
-      });
-    } else {
-      // Cherche l'index du produit existant
-      const itemIndex = cart.items.findIndex(
-        (item) => item.productId === product.productId
-      );
-
-      if (itemIndex > -1) {
-        // Incrémente la quantité si le produit existe déjà
-        cart.items[itemIndex].quantity += product.quantity || 1;
-      } else {
-        // Ajoute le produit s'il n'existe pas
-        cart.items.push({
-          ...product,
-          quantity: product.quantity || 1,
-        });
-      }
+      // créer le panier s'il n'existe pas
+      cart = new Cart({ cartId, items: [] });
     }
 
-    // Sauvegarde et retourne le panier mis à jour
-    const updatedCart = await cart.save();
-    res.status(200).json(updatedCart);
-  } catch (error) {
-    console.error("Erreur addToCart:", error);
-    res.status(500).json({ message: "Erreur serveur" });
+    const existingProduct = cart.items.find(
+      (item) => item.productId === product.productId
+    );
+
+    if (existingProduct) {
+      existingProduct.quantity += product.quantity || 1;
+    } else {
+      cart.items.push(product);
+    }
+
+    await cart.save();
+    res.status(200).json({ items: cart.items });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur ajout au panier" });
   }
 };
 
@@ -104,4 +89,18 @@ const deleteCart = async (req, res) => {
   }
 };
 
-export { getCart, addToCart, updateCart, deleteCart };
+const clearCart = async (req, res) => {
+  const { cartId } = req.params;
+  try {
+    await Cart.findOneAndUpdate(
+      { cartId },
+      { items: [] },
+      { new: true, upsert: true }
+    );
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export { getCart, addToCart, updateCart, deleteCart, clearCart };

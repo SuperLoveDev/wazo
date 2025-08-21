@@ -1,21 +1,22 @@
-import React, { useState, useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Title from "../Components/Title";
 import CartTotal from "../Components/CartTotal";
 import { confiances } from "../assets/assets";
-import { CreditCard } from "lucide-react";
+import { CreditCard, Truck } from "lucide-react";
 import FormInput from "../Components/FormInput";
 import PaymentOption from "../Components/PaymentOption";
 import axios from "axios";
 import { CartContext } from "../Context/CartContext";
+import { useNavigate } from "react-router-dom";
 
-// form schema
 const schema = yup.object({
   nom: yup.string().required("Votre nom est requis"),
   prenom: yup.string().required("Votre prénom est requis"),
-  numero: yup.string().required("Numéro requis pour la livraison"),
+  numero: yup.string().required("Numéro requis"),
+  mail: yup.string().required("votre e-mail est requis pour la facture"),
   pays: yup.string().required("Pays requis"),
   region: yup.string().required("Région requise"),
   codepostal: yup.string().required("Code postal requis"),
@@ -24,54 +25,76 @@ const schema = yup.object({
 });
 
 const OrderConfirmation = () => {
-  const [payment, setPayment] = useState("pal");
-  const { cartItems } = useContext(CartContext);
+  const navigate = useNavigate();
+  const { cartItems, clearCart } = useContext(CartContext);
+  const [payment, setPayment] = useState("cinetpay");
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
   const formSubmit = async (data) => {
-    console.log("Données client :", data);
-    console.log("Méthode de paiement :", payment);
+    if (!cartItems.length) return alert("Votre panier est vide !");
 
-    if (payment === "cinetpay") {
-      try {
-        const subtotal = cartItems.reduce(
-          (total, item) => total + item.prix * item.quantity,
-          0
-        );
-        const livraison = 1500;
-        const montant = subtotal + livraison;
+    try {
+      const orderPayload = {
+        buyer: data,
+        items: cartItems.map((it) => ({
+          productId: it.productId,
+          name: it.article || it.name || it.nom,
+          prix: Number(it.prix || it.price || 0),
+          quantity: Number(it.quantity || 1),
+          boutiqueId: it.boutiqueId,
+        })),
+        livraison: 1000,
+        paymentMethod: payment,
+      };
 
+      if (payment === "livraison") {
         const res = await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}/api/payment/cinetpay`,
-          {
-            ...data,
-            montant,
-            cartId: localStorage.getItem("cartId"),
-          }
+          `${import.meta.env.VITE_BACKEND_URL}/api/order/checkout`,
+          orderPayload,
+          { headers: { "Content-Type": "application/json" } }
         );
-
-        window.location.href = res.data.payment_url;
-      } catch (err) {
-        alert("Erreur lors de la redirection vers le paiement");
-        console.error(err);
+        reset();
+        clearCart();
+        navigate("/delivery-payment", {
+          state: { orderData: res.data.order, billingAddress: data },
+        });
+        return;
       }
-    } else {
-      console.log("Paiement non CinetPay à gérer.");
+
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/order/checkout`,
+        orderPayload,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (payment === "livraison") {
+        alert("Commande confirmée ! Paiement à la livraison.");
+        // Redirection ou reset du panier
+      } else if (res.data?.payment_url) {
+        window.location.href = res.data.payment_url;
+      }
+    } catch (err) {
+      console.error("Erreur checkout:", err.response?.data || err.message);
+      alert("Erreur lors du paiement. Vérifie la console.");
     }
   };
 
   return (
     <form
       onSubmit={handleSubmit(formSubmit)}
-      className="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-15 min-h-[80vh]"
+      className="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-15 min-h-[80vh] mt-20"
     >
+      {/* Partie gauche - Formulaire de livraison (inchangé) */}
       <div className="flex flex-col gap-4 w-full sm:max-w-[480px]">
-        <Title text1={"information livraison"} />
+        <Title text1="Information livraison" />
         <div className="flex gap-3">
           <FormInput
             name="nom"
@@ -93,6 +116,12 @@ const OrderConfirmation = () => {
           error={errors.numero}
         />
         <FormInput
+          name="mail"
+          placeholder="votre e-mail"
+          register={register}
+          error={errors.mail}
+        />
+        <FormInput
           name="pays"
           placeholder="Pays"
           register={register}
@@ -112,30 +141,26 @@ const OrderConfirmation = () => {
         />
         <FormInput
           name="ville"
-          placeholder="Ville*"
+          placeholder="Ville"
           register={register}
           error={errors.ville}
         />
         <FormInput
           name="adressedelivraison"
-          placeholder="Adresse de livraison*"
+          placeholder="Adresse de livraison"
           register={register}
           error={errors.adressedelivraison}
         />
       </div>
 
-      <div className="mt-8">
+      {/* Partie droite - Paiement */}
+      <div className="mt-8 h-[80vh]">
         <div className="border border-gray-300 mt-8 min-w-70">
           <CartTotal />
         </div>
 
-        <div className="border border-gray-300 flex flex-col mt-8">
-          <PaymentOption
-            value="pal"
-            selected={payment}
-            onChange={setPayment}
-            label="Paiement à la livraison"
-          />
+        <div className="border border-gray-300 flex flex-col mt-8 p-4">
+          {/* Option CinetPay */}
           <PaymentOption
             value="cinetpay"
             selected={payment}
@@ -150,23 +175,33 @@ const OrderConfirmation = () => {
               />
             }
           />
+
+          {/* Option Carte Bancaire */}
           <PaymentOption
-            value="card"
+            value="carte"
             selected={payment}
             onChange={setPayment}
-            label="Payer par carte"
-            icon={
-              <div className="inline-flex p-1 bg-gradient-to-r from-blue-400 to-purple-500 rounded">
-                <CreditCard className="text-white" size={24} />
-              </div>
-            }
+            label="Paiement par carte bancaire"
+            icon={<CreditCard className="h-5 w-5" />}
           />
+
+          {/* Option À la livraison */}
+          <PaymentOption
+            value="livraison"
+            selected={payment}
+            onChange={setPayment}
+            label="Payer à la livraison (cash)"
+            icon={<Truck className="h-5 w-5" />}
+          />
+
           <div className="flex items-center justify-center mt-4">
             <button
               type="submit"
               className="w-[230px] border bg-black text-white p-4 rounded cursor-pointer mb-4 hover:bg-gray-800 transition-colors"
             >
-              Confirmation paiement
+              {payment === "livraison"
+                ? "Confirmer la commande"
+                : "Payer maintenant"}
             </button>
           </div>
         </div>

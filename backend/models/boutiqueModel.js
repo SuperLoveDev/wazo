@@ -3,10 +3,12 @@ import mongoose from "mongoose";
 const boutiqueSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
+    solde: { type: Number, default: 0 },
     description: { type: String, required: true },
     category: { type: String, required: true },
     adresse: { type: String, required: true },
     whatsapp: { type: String, required: true, unique: true },
+    mail: { type: String, required: true, unique: true },
     motdepasse: { type: String, required: true },
     image: { type: String, required: true },
     products: [
@@ -15,6 +17,8 @@ const boutiqueSchema = new mongoose.Schema(
         ref: "Product",
       },
     ],
+    totalSales: { type: Number, default: 0 },
+    ordersCount: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

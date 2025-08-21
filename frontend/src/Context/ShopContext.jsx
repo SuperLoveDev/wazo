@@ -7,10 +7,16 @@ const ShopContextProvider = ({ children }) => {
   const [showInput, setShowInput] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   const [boutiques, setBoutiques] = useState([]);
   const [selectedBoutique, setSelectedBoutique] = useState(null);
 
-  //TO SHOW BOUTIQUE DYNAMICALLY
+  const loginBoutique = (token, boutique) => {
+    localStorage.setItem("boutiqueToken", token);
+    localStorage.setItem("selectedBoutiqueId", boutique._id);
+    setSelectedBoutique(boutique);
+  };
+
   useEffect(() => {
     const fetchBoutiques = async () => {
       try {
@@ -20,8 +26,18 @@ const ShopContextProvider = ({ children }) => {
         if (response.data.success) {
           setBoutiques(response.data.boutiques);
 
-          if (response.data.boutiques.length > 0) {
-            setSelectedBoutique(response.data.boutiques[0]._id);
+          const storedBoutiqueId = localStorage.getItem("selectedBoutiqueId");
+
+          let boutiqueObj = response.data.boutiques.find(
+            (b) => b._id === storedBoutiqueId
+          );
+
+          if (boutiqueObj) {
+            setSelectedBoutique(boutiqueObj);
+          } else if (response.data.boutiques.length > 0) {
+            boutiqueObj = response.data.boutiques[0];
+            setSelectedBoutique(boutiqueObj);
+            localStorage.setItem("selectedBoutiqueId", boutiqueObj._id);
           }
         }
       } catch (error) {
@@ -31,7 +47,16 @@ const ShopContextProvider = ({ children }) => {
     fetchBoutiques();
   }, [backendUrl]);
 
-  // TO SEE PRODUCT ADDED FROM THE BOUTIQUEOWNER DASHBOARD
+  // Quand l'utilisateur change de boutique
+  const handleBoutiqueChange = (newBoutiqueId) => {
+    const boutiqueObj = boutiques.find((b) => b._id === newBoutiqueId);
+    if (boutiqueObj) {
+      setSelectedBoutique(boutiqueObj);
+      localStorage.setItem("selectedBoutiqueId", newBoutiqueId);
+    }
+  };
+
+  // Mise à jour des produits dans la boutique sélectionnée
   const updateBoutiqueProducts = (boutiqueId, newProduct) => {
     setBoutiques((prevBoutiques) =>
       prevBoutiques.map((boutique) =>
@@ -43,13 +68,22 @@ const ShopContextProvider = ({ children }) => {
           : boutique
       )
     );
+
+    // Si la boutique mise à jour est la sélectionnée, on la met à jour aussi
+    if (selectedBoutique?._id === boutiqueId) {
+      setSelectedBoutique((prev) => ({
+        ...prev,
+        products: [newProduct, ...(prev.products || [])],
+      }));
+    }
   };
 
   const value = useMemo(
     () => ({
       boutiques,
       selectedBoutique,
-      setSelectedBoutique,
+      setSelectedBoutique: handleBoutiqueChange,
+      loginBoutique,
       showInput,
       setShowInput,
       inputValue,
@@ -58,7 +92,7 @@ const ShopContextProvider = ({ children }) => {
       updateBoutiqueProducts,
       setBoutiques,
     }),
-    [showInput, inputValue, backendUrl, boutiques, selectedBoutique]
+    [boutiques, selectedBoutique, showInput, inputValue, backendUrl]
   );
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;

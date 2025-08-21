@@ -42,7 +42,6 @@ const addProduct = async (req, res) => {
       price: Number(price),
       image: result.secure_url,
       boutique: boutiqueId,
-      date: Date.now(),
     };
 
     const product = new Product(productData);
@@ -59,7 +58,7 @@ const addProduct = async (req, res) => {
       success: true,
       message: "Produit ajouté avec succès",
       product: savedProduct,
-      boutique: updatedBoutique, // Send back the fully updated boutique
+      boutique: updatedBoutique,
     });
   } catch (error) {
     console.error(error);
@@ -70,7 +69,10 @@ const addProduct = async (req, res) => {
 // listing product
 const listProduct = async (req, res) => {
   try {
-    const products = await Product.find({}).sort({ createdAt: -1 });
+    const boutiqueId = req.params.boutiqueId;
+    const products = await Product.find({ boutique: boutiqueId }).sort({
+      createdAt: -1,
+    });
     res.status(200).json({ success: true, products });
   } catch (error) {
     console.error(error);
@@ -110,17 +112,20 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-// get single or product by id // for future purpose
-// const productById = async (req, res) => {
-//   try {
-//     const { productId } = req.body;
-//     const product = await Product.findById(productId);
-//     res.status(200).json({ success: true, product });
-//   } catch (error) {
-//     console.error(error);
-//     res.json({ success: false, message: error.message });
-//   }
-// };
+// get single or product by id
+const productById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findById(req.params.id).populate(
+      "boutique",
+      "name"
+    );
+    res.status(200).json({ success: true, product });
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: error.message });
+  }
+};
 
 // update a product
 const updateProduct = async (req, res) => {
@@ -145,4 +150,4 @@ const updateProduct = async (req, res) => {
   }
 };
 
-export { addProduct, listProduct, updateProduct, deleteProduct };
+export { addProduct, productById, listProduct, updateProduct, deleteProduct };

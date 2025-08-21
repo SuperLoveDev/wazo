@@ -3,6 +3,7 @@ import FormBoutique from "../Components/FormBoutique";
 import imageform from "../assets/registerImage.jpg";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Ticker from "../Components/Ticker";
 
 const CreateShop = ({ handleSubmit }) => {
   const navigate = useNavigate();
@@ -32,6 +33,10 @@ const CreateShop = ({ handleSubmit }) => {
             loading="lazy"
           />
         </div>
+      </div>
+
+      <div className="mb-15 my-10">
+        <Ticker />
       </div>
     </>
   );

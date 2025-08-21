@@ -39,6 +39,8 @@ const Add = () => {
     });
   };
 
+  console.log("Boutique sélectionnée pour ajout produit :", selectedBoutique);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -52,13 +54,13 @@ const Add = () => {
       return;
     }
 
-    if (!selectedBoutique) {
+    if (!selectedBoutique || !selectedBoutique._id) {
       toast.error("Aucune boutique sélectionnée");
       return;
     }
 
     const data = new FormData();
-    data.append("boutiqueId", selectedBoutique);
+    data.append("boutiqueId", selectedBoutique._id);
     data.append("article", formData.article);
     data.append("description", formData.description);
     data.append("price", formData.price);

@@ -53,9 +53,9 @@ const Priority = () => {
 
       <div className="max-w-7xl mx-auto flex flex-col justify-center items-center gap-6 mb-19">
         <h1 className="text-white sm:text-xl md:text-base lg:text-6xl text-4xl">
-          Qu'Attendez-Vous ?
+          QU'Attendez-Vous ?
         </h1>
-        <p className="text-white text-xl">
+        <p className="text-white text-xl px-4">
           Crée et développe ton activité des aujourdhui.
         </p>
         <button className="text-black text-center border w-50 h-[60px] text-xl rounded-full cursor-pointer bg-white hover:bg-white/80">

@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+
+import { ShopContext } from "../../Context/ShopContext";
 import { Pencil, Trash2, Save, X } from "lucide-react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
 const List = () => {
+  const { selectedBoutique } = useContext(ShopContext);
   const [products, setProducts] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({
@@ -15,9 +18,13 @@ const List = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
+    if (!selectedBoutique) return;
+
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`${backendUrl}/api/product/list`);
+        const response = await axios.get(
+          `${backendUrl}/api/product/list/${selectedBoutique._id}`
+        );
         if (response.data.success) {
           setProducts(response.data.products);
         }
@@ -27,7 +34,7 @@ const List = () => {
     };
 
     fetchProducts();
-  }, [backendUrl]);
+  }, [selectedBoutique, backendUrl]);
 
   // Fonction de suppression (conservée telle quelle)
   const handleDelete = async (productId) => {

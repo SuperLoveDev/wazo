@@ -15,6 +15,7 @@ const schema = yup.object().shape({
   Category: yup.string().required("Veuillez choisir une catégorie"),
   Adresse: yup.string().required("L'adresse est requise !"),
   Whatsapp: yup.string().required("Le numéro WhatsApp est requis."),
+  mail: yup.string().required("Votre mail est requis"),
   motdepasse: yup.string().required("veuillez entrer un mot de passe"),
   Image: yup.mixed().required("L'image est requise."),
 });
@@ -44,6 +45,7 @@ const FormBoutique = () => {
       formData.append("category", data.Category);
       formData.append("adresse", data.Adresse);
       formData.append("whatsapp", data.Whatsapp);
+      formData.append("mail", data.mail);
       formData.append("motdepasse", data.motdepasse);
       formData.append("image", data.Image[0]);
 
@@ -93,11 +95,11 @@ const FormBoutique = () => {
           <input
             {...register("Nomdelaboutique")}
             type="text"
-            className="border p-2 rounded-xl w-full"
+            className="border p-2 outline-0 rounded-xl w-full"
             placeholder="Nom de la boutique"
           />
           {errors.Nomdelaboutique && (
-            <p className="text-red-500 text-sm">
+            <p className="text-red-500 italic text-sm">
               {errors.Nomdelaboutique.message}
             </p>
           )}
@@ -106,35 +108,38 @@ const FormBoutique = () => {
         <div>
           <textarea
             {...register("Description")}
-            className="resize-none border p-2 rounded-xl w-full"
+            className="resize-none border p-2 outline-0 rounded-xl w-full"
             rows={3}
             placeholder="Description de la boutique"
           />
           {errors.Description && (
-            <p className="text-red-500 text-sm">{errors.Description.message}</p>
+            <p className="text-red-500 italic text-sm">
+              {errors.Description.message}
+            </p>
           )}
         </div>
 
         <div>
           <select
             {...register("Category")}
-            className="border p-2 rounded-xl w-full"
+            className="border p-2 outline-0 rounded-xl w-full"
           >
             <option value="MODE">Mode</option>
-            <option value="BEAUTÉ">Beauté</option>
-            <option value="COUTURE">Couture</option>
             <option value="COSMETIQUE">Cosmétique</option>
+            <option value="COUTURE">Couture</option>
             <option value="PAGNES">Pagnes</option>
-            <option value="AUDIO-VISUEL">Audio-visuel</option>
+            <option value="PRET A PORTER">Pret a porter</option>
             <option value="RESTAURANT">Restauration</option>
             <option value="SERVICE">Services</option>
             <option value="EDUCATION">Éducation</option>
             <option value="LOCATION">Location</option>
-            <option value="FITNESS">Fitness</option>
             <option value="PARFUMERIE">Parfumerie</option>
+            <option value="BIJOUTERIE">Bijouterie</option>
           </select>
           {errors.Category && (
-            <p className="text-red-500 text-sm">{errors.Category.message}</p>
+            <p className="text-red-500 italic text-sm">
+              {errors.Category.message}
+            </p>
           )}
         </div>
 
@@ -142,10 +147,12 @@ const FormBoutique = () => {
           <input
             {...register("Adresse")}
             placeholder="Adresse (quartier, ville)"
-            className="border p-2 rounded-xl w-full"
+            className="border p-2 outline-0 rounded-xl w-full"
           />
           {errors.Adresse && (
-            <p className="text-red-500 text-sm">{errors.Adresse.message}</p>
+            <p className="text-red-500 italic text-sm">
+              {errors.Adresse.message}
+            </p>
           )}
         </div>
 
@@ -153,10 +160,23 @@ const FormBoutique = () => {
           <input
             {...register("Whatsapp")}
             placeholder="Numéro business WhatsApp (+225XXXXXXXX)"
-            className="border p-2 rounded-xl w-full"
+            className="border p-2 outline-0 rounded-xl w-full"
           />
           {errors.Whatsapp && (
-            <p className="text-red-500 text-sm">{errors.Whatsapp.message}</p>
+            <p className="text-red-500 italic text-sm">
+              {errors.Whatsapp.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <input
+            {...register("mail")}
+            placeholder="votre mail"
+            className="border p-2 outline-0 rounded-xl w-full"
+          />
+          {errors.Whatsapp && (
+            <p className="text-red-500 italic text-sm">{errors.mail.message}</p>
           )}
         </div>
 
@@ -164,10 +184,12 @@ const FormBoutique = () => {
           <input
             {...register("motdepasse")}
             placeholder="creer votre mot de passe"
-            className="border p-2 rounded-xl w-full"
+            className="border p-2 outline-0 rounded-xl w-full"
           />
           {errors.motdepasse && (
-            <p className="text-red-500 text-sm">{errors.motdepasse.message}</p>
+            <p className="text-red-500 italic text-sm">
+              {errors.motdepasse.message}
+            </p>
           )}
         </div>
 
@@ -179,7 +201,9 @@ const FormBoutique = () => {
             className="border p-2 rounded-xl w-full"
           />
           {errors.Image && (
-            <p className="text-red-500 text-sm">{errors.Image.message}</p>
+            <p className="text-red-500 italic text-sm">
+              {errors.Image.message}
+            </p>
           )}
           {imageFile && imageFile.length > 0 && (
             <img
@@ -202,9 +226,9 @@ const FormBoutique = () => {
         </button>
       </form>
       <Link to="/loginboutique" className="px-4">
-        <p className="text-2xl my-5">
+        <p className="text-base my-5">
           Avez-vous déjà un compte ?{" "}
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-red-500 font-medium cursor-pointer">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-red-500 font-medium cursor-pointer text-2xl">
             Cliquez ici
           </span>
         </p>

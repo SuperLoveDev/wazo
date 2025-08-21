@@ -11,7 +11,7 @@ const createToken = (id) => {
 //Router creating a boutique
 const boutiqueUser = async (req, res) => {
   try {
-    const { name, description, category, adresse, whatsapp, motdepasse } =
+    const { name, description, category, adresse, whatsapp, mail, motdepasse } =
       req.body;
 
     // verifying if the boutique user exit
@@ -55,6 +55,7 @@ const boutiqueUser = async (req, res) => {
       category,
       adresse,
       whatsapp,
+      mail,
       image: imageUrl,
       motdepasse: hashedPassword,
     });
